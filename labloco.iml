@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="django" name="Django">
+      <configuration>
+        <option name="rootFolder" value="$MODULE_DIR$/gui" />
+        <option name="settingsModule" value="settings.py" />
+        <option name="manageScript" value="manage.py" />
+        <option name="environment" value="&lt;map/&gt;" />
+        <option name="commandsToSkip" value="" />
+      </configuration>
+    </facet>
+    <facet type="google-appengine-python" name="Google App Engine (Python)">
+      <configuration>
+        <option name="rootFolder" value="$MODULE_DIR$/google-blockly/appengine" />
+        <option name="sdkFolder" value="" />
+        <option name="templatesFolder" value="" />
+        <option name="oauth2" value="false" />
+        <option name="deployConfigured" value="false" />
+        <option name="saveCredentials" value="false" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Google App Engine SDK" level="project" />
+  </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_CONFIGURATION" value="Django" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/google-blockly/demos" />
+        <option value="$MODULE_DIR$/google-blockly/demos/rtl" />
+        <option value="$MODULE_DIR$/google-blockly/demos/code" />
+        <option value="$MODULE_DIR$/google-blockly/demos/fixed" />
+        <option value="$MODULE_DIR$/google-blockly/demos/graph" />
+        <option value="$MODULE_DIR$/google-blockly/demos/plane" />
+        <option value="$MODULE_DIR$/google-blockly/demos/mirror" />
+        <option value="$MODULE_DIR$/google-blockly/demos/codelab/app" />
+        <option value="$MODULE_DIR$/google-blockly/demos/codelab/app-complete" />
+        <option value="$MODULE_DIR$/google-blockly/demos/minimap" />
+        <option value="$MODULE_DIR$/google-blockly/demos/storage" />
+        <option value="$MODULE_DIR$/google-blockly/demos/toolbox" />
+        <option value="$MODULE_DIR$/google-blockly/demos/headless" />
+        <option value="$MODULE_DIR$/google-blockly/demos/generator" />
+        <option value="$MODULE_DIR$/google-blockly/demos/maxBlocks" />
+        <option value="$MODULE_DIR$/google-blockly/demos/resizable" />
+        <option value="$MODULE_DIR$/google-blockly/demos/accessible" />
+        <option value="$MODULE_DIR$/google-blockly/demos/interpreter" />
+        <option value="$MODULE_DIR$/google-blockly/demos/blockfactory" />
+        <option value="$MODULE_DIR$/google-blockly/demos/custom-dialogs" />
+        <option value="$MODULE_DIR$/google-blockly/demos/blockfactory_old" />
+        <option value="$MODULE_DIR$/google-blockly/tests" />
+        <option value="$MODULE_DIR$/google-blockly/tests/blocks" />
+        <option value="$MODULE_DIR$/google-blockly/tests/jsunit" />
+        <option value="$MODULE_DIR$/google-blockly/tests/compile" />
+        <option value="$MODULE_DIR$/google-blockly/tests/generators" />
+        <option value="$MODULE_DIR$/google-blockly/tests/workspace_svg" />
+        <option value="$MODULE_DIR$/google-blockly/appengine" />
+      </list>
+    </option>
+  </component>
+</module>
