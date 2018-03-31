@@ -1,3 +1,6 @@
+
+
+
 Blockly.defineBlocksWithJsonArray(
   // BEGIN JSON EXTRACT
   [{
@@ -69,7 +72,7 @@ function valueOrNone(arg) {
 }
 
 Blockly.Python['robot_position'] = function(block) {
-  block.getFie
+  // block.getFie
   var number_x = valueOrNone(block.getFieldValue('X'));
   var number_y = valueOrNone(block.getFieldValue('Y'));
   var number_z = valueOrNone(block.getFieldValue('Z'));
@@ -77,10 +80,10 @@ Blockly.Python['robot_position'] = function(block) {
   // TODO: Assemble Python into code variable.
 
   var code = "{";
-  code += "x:" + number_x + ", ";
-  code += "y:" + (number_y) + ", ";
-  code += "z:" + (number_z) + ", ";
-  code += "e:" + (number_e);
+  code += "\'x\':" + number_x + ", ";
+  code += "\'y\':" + (number_y) + ", ";
+  code += "\'z\':" + (number_z) + ", ";
+  code += "\'e\':" + (number_e);
   code += '}';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
@@ -91,7 +94,9 @@ Blockly.Python['robot_move'] = function(block) {
   // TODO: Assemble Python into code variable.
   console.log(value_position);
   var code = "dict_args = " + value_position + " \n";
-  code += "dict_args[wait] = True \n";
-  code += "swift_set_position(**dict_args)\n";
+  code += "dict_args[\'wait\'] = True \n";
+  code += "swift.set_position(**dict_args)\n";
   return code;
 };
+
+

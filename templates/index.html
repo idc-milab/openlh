@@ -25,6 +25,8 @@
   <p>
     <button onclick="showCode()">Show JavaScript</button>
     <button onclick="runCode()">Run JavaScript</button>
+      <button onclick="sendCode()">Play</button>
+
   </p>
 
   <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
@@ -139,6 +141,49 @@
       } catch (e) {
         alert(e);
       }
+    }
+
+    function getInitCode()
+    {
+      var code = '';
+      code += 'from uf.wrapper.swift_api import SwiftAPI\n';
+      code += 'from uf.utils.log import *\n';
+      code += 'from time import sleep\n';
+      code += 'logger_init(logging.DEBUG)\n';
+      code +=  "swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}\n";
+      code +=  "sleep(2)\n";
+
+      code += 'print("Allowing extrusion")\n';
+      code += 'swift.send_cmd_sync("M302 S0")\n';
+      return code;
+    }
+
+    function getFinalCode() {
+      var code = '';
+      code += 'swift.set_position(e=0, speed=1500, timeout=30, wait=True)\n';
+      code += 'swift.set_position(120, 0, 50, speed=30000, timeout=30, wait=True)\n';
+      return code;
+    }
+
+    function sendCode()
+    {
+      var code = Blockly.Python.workspaceToCode(demoWorkspace);
+      var newName = 'John Smith',
+        xhr = new XMLHttpRequest();
+      var code = getInitCode() + code + getFinalCode();
+
+      xhr.open('POST', 'run_code');
+{#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function() {
+        if (xhr.status !== 200) {
+          alert('Request failed.  Returned status of ' + xhr.status);
+        }
+      };
+{#      xhr.send(encodeURI('name=' + newName));#}
+      xhr.send(JSON.stringify({code: code}));
+
+
     }
   </script>
 
