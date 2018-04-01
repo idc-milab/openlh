@@ -58,7 +58,29 @@ Blockly.defineBlocksWithJsonArray(
       "colour": 230,
       "tooltip": "",
       "helpUrl": ""
-    }]
+    },
+
+    {
+      "type": "robot_wrist",
+      "message0": "Move wrist: %1 %2",
+      "args0": [
+        {
+          "type": "input_dummy"
+        },
+        {
+          "type": "field_angle",
+          "name": "Angle",
+          "angle": 90
+        }
+      ],
+      "inputsInline": true,
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": 230,
+      "tooltip": "",
+      "helpUrl": ""
+    }
+  ]
 );  // END JSON EXTRACT (Do not delete this comment.)
 function valueOrNone(arg) {
   if(arg==="0")
@@ -99,4 +121,10 @@ Blockly.Python['robot_move'] = function(block) {
   return code;
 };
 
+
+Blockly.Python['robot_wrist'] = function(block) {
+  var angle = block.getFieldValue('Angle');
+  var code = 'swift.set_wrist('+angle+')\nsleep(1)\n';
+  return code;
+};
 

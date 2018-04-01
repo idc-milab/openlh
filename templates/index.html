@@ -30,11 +30,24 @@
   </p>
 
   <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+  <div id="savedPrograms">
+      <span>Save program:</span>
+      <input type="text" name="programName" id="programName">
+      <label for="programName">Name:</label>
+      <button onclick="saveWorkspace()">Save</button>
+      <div>
+          <ul id="listOfPrograms">
+
+          </ul>
+
+      </div>
+  </div>
 
   <xml id="toolbox" style="display: none">
       <category name="Robot">
           <block type="robot_move"></block>
           <block type="robot_position"></block>
+          <block type="robot_wrist"></block>
       </category>
     <category name="Logic">
       <block type="controls_if"></block>
@@ -115,13 +128,80 @@
   </xml>
 
   <script>
+
     var demoWorkspace = Blockly.inject('blocklyDiv',
         {media: '../../media/',
          toolbox: document.getElementById('toolbox')});
     Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
                                demoWorkspace);
 
+    function loadXml(xml_text)
+    {
+      demoWorkspace.clear();
+      var xml = Blockly.Xml.textToDom(xml_text);
+      Blockly.Xml.domToWorkspace(xml, demoWorkspace);
+    }
+    function getProgram(programName)
+    {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'get_code?name='+programName);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function() {
+        if (xhr.status !== 200) {
+          alert('Request failed.  Returned status of ' + xhr.status);
+        }
+        else{
+          var response = JSON.parse(xhr.response);
+          loadXml(response.code)
+        }
+      };
+      xhr.send(null);
+    }
+    function addProgramToList(programName)
+    {
+      var ul = document.getElementById("listOfPrograms");
+      var li = document.createElement("li");
+      li.appendChild(document.createTextNode(programName));
+      li.onclick = function () {
+        getProgram(programName);
+      };
+      ul.appendChild(li);
+    }
 
+    document.addEventListener("DOMContentLoaded", function(event) {
+        getPrograms();
+    });
+
+    function cleanProgramList()
+    {
+      var ul = document.getElementById("listOfPrograms");
+      ul.innerHTML = "";
+    }
+    function getPrograms()
+    {
+      var xhr = new XMLHttpRequest();
+      {#      var code = getInitCode() + code + getFinalCode();#}
+
+      xhr.open('GET', 'get_programs');
+      {#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function() {
+        if (xhr.status !== 200) {
+          alert('Request failed.  Returned status of ' + xhr.status);
+        }
+        else{
+          cleanProgramList();
+          var response = JSON.parse(xhr.response);
+          for(var program in response.programs)
+          {
+            addProgramToList(response.programs[program]);
+          }
+        }
+      };
+      {#      xhr.send(encodeURI('name=' + newName));#}
+      xhr.send();
+      // Your code to run since DOM is loaded and ready
+    }
     function showCode() {
       // Generate JavaScript code and display it.
       Blockly.Python.INFINITE_LOOP_TRAP = null;
@@ -161,7 +241,7 @@
     function getFinalCode() {
       var code = '';
       code += 'swift.set_position(e=0, speed=1500, timeout=30, wait=True)\n';
-      code += 'swift.set_position(120, 0, 50, speed=30000, timeout=30, wait=True)\n';
+      code += 'swift.set_position(120, 0, 50, speed=1500, timeout=30, wait=True)\n';
       return code;
     }
 
@@ -182,9 +262,34 @@
       };
 {#      xhr.send(encodeURI('name=' + newName));#}
       xhr.send(JSON.stringify({code: code}));
+    }
 
+    function saveWorkspace(){
+      var xml = Blockly.Xml.workspaceToDom(demoWorkspace);
+      var xml_text = Blockly.Xml.domToText(xml);
+      var program_name = document.getElementById("programName").value;
+{#      Blockly.Xml.domToPrettyText#}
+      alert(xml_text);
+      var xhr = new XMLHttpRequest();
+{#      var code = getInitCode() + code + getFinalCode();#}
+
+      xhr.open('POST', 'save_xml');
+      {#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function() {
+        if (xhr.status !== 200) {
+          alert('Request failed.  Returned status of ' + xhr.status);
+        }
+        else{
+          document.getElementById("programName").value = "";
+          addProgramToList(program_name);
+        }
+      };
+      {#      xhr.send(encodeURI('name=' + newName));#}
+      xhr.send(JSON.stringify({xml: xml_text, name: program_name}));
 
     }
+
   </script>
 
 </body>
