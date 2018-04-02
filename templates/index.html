@@ -558,6 +558,7 @@
       code += 'from uf.utils.log import *\n';
       code += 'from time import sleep\n';
       code += 'logger_init(logging.DEBUG)\n';
+      code += 'global swift\n';
       code +=  "swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}\n";
       code +=  "sleep(2)\n";
 
