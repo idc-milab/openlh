@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Generating JavaScript</title>
+  <script src="../../blockly_compressed.js"></script>
+  <script src="../../blocks_compressed.js"></script>
+  <script src="../../javascript_compressed.js"></script>
+    <script src="../../python_compressed.js"></script>
+{#    https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#po83ch#}
+{#    https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#yv6tkb#}
+  <script src="../../msg/js/en.js"></script>
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+ <script>
+   Blockly.defineBlocksWithJsonArray(
+     // BEGIN JSON EXTRACT
+     [{
+       "type": "robot_position",
+       "message0": "X %1 %2 Y %3 %4 Z %5 %6 E %7",
+       "args0": [
+         {
+           "type": "field_number",
+           "name": "X",
+           "value": 0
+         },
+         {
+           "type": "input_dummy"
+         },
+         {
+           "type": "field_number",
+           "name": "Y",
+           "value": 0
+         },
+         {
+           "type": "input_dummy"
+         },
+         {
+           "type": "field_number",
+           "name": "Z",
+           "value": 0
+         },
+         {
+           "type": "input_dummy"
+         },
+         {
+           "type": "field_number",
+           "name": "E",
+           "value": 0
+         }
+       ],
+       "inputsInline": true,
+       "output": null,
+       "colour": 260,
+       "tooltip": "",
+       "helpUrl": ""
+     },
+       {
+         "type": "robot_move",
+         "message0": "Move to: %1",
+         "args0": [
+           {
+             "type": "input_value",
+             "name": "position",
+             "check": "robot_position"
+           }
+         ],
+         "previousStatement": null,
+         "nextStatement": null,
+         "colour": 230,
+         "tooltip": "",
+         "helpUrl": ""
+       }]
+   );  // END JSON EXTRACT (Do not delete this comment.)
+    function valueOrNone(arg) {
+      if(arg==="0")
+      {
+        return 'None';
+      }
+      else{
+        return arg;
+      }
+
+    }
+
+   Blockly.Python['robot_position'] = function(block) {
+      block.getFie
+     var number_x = valueOrNone(block.getFieldValue('X'));
+     var number_y = valueOrNone(block.getFieldValue('Y'));
+     var number_z = valueOrNone(block.getFieldValue('Z'));
+     var number_e = valueOrNone(block.getFieldValue('E'));
+     // TODO: Assemble Python into code variable.
+
+     var code = "{";
+     code += "x:" + number_x + ", ";
+     code += "y:" + (number_y) + ", ";
+     code += "z:" + (number_z) + ", ";
+     code += "e:" + (number_e);
+     code += '}';
+     // TODO: Change ORDER_NONE to the correct strength.
+     return [code, Blockly.Python.ORDER_NONE];
+   };
+
+   Blockly.Python['robot_move'] = function(block) {
+     var value_position = Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC);
+     // TODO: Assemble Python into code variable.
+     console.log(value_position);
+     var code = "dict_args = " + value_position + " \n";
+     code += "dict_args[wait] = True \n";
+     code += "swift_set_position(**dict_args)\n";
+     return code;
+   };
+ </script>
+  <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
+    <a href="../index.html">Demos</a> &gt; Generating JavaScript</h1>
+
+  <p>This is a simple demo of generating code from blocks.</p>
+
+  <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/code-generators">Code Generators</a>&hellip;</p>
+
+  <p>
+    <button onclick="showCode()">Show JavaScript</button>
+    <button onclick="runCode()">Run JavaScript</button>
+  </p>
+
+  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+
+  <xml id="toolbox" style="display: none">
+      <category name="Robot">
+          <block type="robot_move"></block>
+          <block type="robot_position"></block>
+      </category>
+    <category name="Logic">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+    </category>
+    <category name="Loops">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <block type="math_number">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+    </category>
+    <category name="Math">
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+      <block type="math_single"></block>
+    </category>
+    <category name="Text">
+      <block type="text"></block>
+      <block type="text_length"></block>
+      <block type="text_print"></block>
+    </category>
+  </xml>
+
+  <xml id="startBlocks" style="display: none">
+    <block type="controls_if" inline="false" x="20" y="20">
+      <mutation else="1"></mutation>
+      <value name="IF0">
+        <block type="logic_compare" inline="true">
+          <field name="OP">EQ</field>
+          <value name="A">
+            <block type="math_arithmetic" inline="true">
+              <field name="OP">MULTIPLY</field>
+              <value name="A">
+                <block type="math_number">
+                  <field name="NUM">6</field>
+                </block>
+              </value>
+              <value name="B">
+                <block type="math_number">
+                  <field name="NUM">7</field>
+                </block>
+              </value>
+            </block>
+          </value>
+          <value name="B">
+            <block type="math_number">
+              <field name="NUM">42</field>
+            </block>
+          </value>
+        </block>
+      </value>
+      <statement name="DO0">
+        <block type="text_print" inline="false">
+          <value name="TEXT">
+            <block type="text">
+              <field name="TEXT">Don't panic</field>
+            </block>
+          </value>
+        </block>
+      </statement>
+      <statement name="ELSE">
+        <block type="text_print" inline="false">
+          <value name="TEXT">
+            <block type="text">
+              <field name="TEXT">Panic</field>
+            </block>
+          </value>
+        </block>
+      </statement>
+    </block>
+  </xml>
+
+  <script>
+    var demoWorkspace = Blockly.inject('blocklyDiv',
+        {media: '../../media/',
+         toolbox: document.getElementById('toolbox')});
+    Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
+                               demoWorkspace);
+
+
+    function showCode() {
+      // Generate JavaScript code and display it.
+      Blockly.Python.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.Python.workspaceToCode(demoWorkspace);
+      alert(code);
+    }
+
+    function runCode() {
+      // Generate JavaScript code and run it.
+      window.LoopTrap = 1000;
+      Blockly.JavaScript.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      try {
+        eval(code);
+      } catch (e) {
+        alert(e);
+      }
+    }
+  </script>
+
+</body>
+</html>
