@@ -46,7 +46,7 @@ Blockly.defineBlocksWithJsonArray(
   // },
     {
       "type": "robot_position",
-      "message0": "X %1 Y %2 Z %3 E %4",
+      "message0": "X %1 Y %2 Z %3 E %4 S %5",
       "args0": [
         {
           "type": "input_value",
@@ -66,6 +66,11 @@ Blockly.defineBlocksWithJsonArray(
         {
           "type": "input_value",
           "name": "E",
+          "check": "Number"
+        },
+        {
+          "type": "input_value",
+          "name": "S",
           "check": "Number"
         }
       ],
@@ -148,6 +153,7 @@ Blockly.Python['robot_position'] = function(block) {
   var value_y = Blockly.Python.valueToCode(block, 'Y', Blockly.Python.ORDER_ATOMIC);
   var value_z = Blockly.Python.valueToCode(block, 'Z', Blockly.Python.ORDER_ATOMIC);
   var value_e = Blockly.Python.valueToCode(block, 'E', Blockly.Python.ORDER_ATOMIC);
+  var value_s = Blockly.Python.valueToCode(block, 'S', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
   // var code = '...';
 
@@ -155,7 +161,8 @@ Blockly.Python['robot_position'] = function(block) {
   code += "\'x\':" + valueOrNone(value_x) + ", ";
   code += "\'y\':" + valueOrNone(value_y) + ", ";
   code += "\'z\':" + valueOrNone(value_z) + ", ";
-  code += "\'e\':" + valueOrNone(value_e);
+  code += "\'e\':" + valueOrNone(value_e) + ", ";
+  code += "\'s\':" + valueOrNone(value_s);
   code += '}';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
