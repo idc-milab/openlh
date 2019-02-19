@@ -1,4 +1,5 @@
 flask
+bokeh
 psycopg2
 pyserial
 python-osc

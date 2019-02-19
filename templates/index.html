@@ -26,8 +26,15 @@
     <button onclick="showCode()">Show JavaScript</button>
     <button onclick="runCode()">Run JavaScript</button>
       <button onclick="sendCode()">Play</button>
+    <form action="/upload" method="post" enctype="multipart/form-data" >
+      <span class="btn btn-default btn-file">
+        Browse <input type="file" name="image">
+      </span>
 
+        <input type="submit" value="Upload your image" class="btn btn-primary">
+     </form>
   </p>
+  <p>--- Upload your image in .png format ---</p>
 
   <div id="blocklyDiv" style="height: 1200px; width: 1200px;"></div>
   <div id="savedPrograms">
@@ -35,17 +42,29 @@
       <input type="text" name="programName" id="programName">
       <label for="programName">Name:</label>
       <button onclick="saveWorkspace()">Save</button>
+      <p><strong>Saved Programs:</strong></p>
       <div>
           <ul id="listOfPrograms">
 
           </ul>
 
       </div>
+      <p><strong>Saved Images:</strong></p>
+      <div>
+          <ul id="listOfImages">
+
+          </ul>
+      </div>
+
   </div>
   <xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
-      <category name="Robot">
+      <category name="Image" colour="#ffdf6d">
+          <block type="print_image"></block>
+      </category>
+      <category name="Robot" colour="#8a868c">
           <block type="robot_move"></block>
           <block type="robot_position"></block>
+          <block type="robot_sleep"></block>
           <block type="robot_wrist"></block>
       </category>
       <category name="Logic" colour="#5C81A6">
@@ -485,19 +504,43 @@
       };
       xhr.send(null);
     }
+
     function addProgramToList(programName)
     {
       var ul = document.getElementById("listOfPrograms");
       var li = document.createElement("li");
       li.appendChild(document.createTextNode(programName));
-      li.onclick = function () {
-        getProgram(programName);
+      var button = document.createElement("BUTTON");
+      button.textContent = "Load";
+      button.onclick = function () {
+          getProgram(programName);
+          alert(programName + " was loaded successfully.")
       };
+      var var_space = document.createTextNode("    ->    ");
+      li.appendChild(var_space);
+      li.appendChild(button);
+      ul.appendChild(li);
+    }
+
+    function addImageToList(imageName)
+    {
+      var ul = document.getElementById("listOfImages");
+      var li = document.createElement("li");
+      li.appendChild(document.createTextNode(imageName));
+      var button = document.createElement("BUTTON");
+      button.textContent = "Show Layout";
+      button.onclick = function () {
+          window.open("./" + imageName + ".html")
+      };
+      var var_space = document.createTextNode("    ->    ");
+      li.appendChild(var_space);
+      li.appendChild(button);
       ul.appendChild(li);
     }
 
     document.addEventListener("DOMContentLoaded", function(event) {
         getPrograms();
+        getImages();
     });
 
     function cleanProgramList()
@@ -505,6 +548,13 @@
       var ul = document.getElementById("listOfPrograms");
       ul.innerHTML = "";
     }
+
+    function cleanImageList()
+    {
+      var ul = document.getElementById("listOfImages");
+      ul.innerHTML = "";
+    }
+
     function getPrograms()
     {
       var xhr = new XMLHttpRequest();
@@ -530,6 +580,33 @@
       xhr.send();
       // Your code to run since DOM is loaded and ready
     }
+
+    function getImages()
+    {
+      var xhr = new XMLHttpRequest();
+      {#      var code = getInitCode() + code + getFinalCode();#}
+
+      xhr.open('GET', 'get_images');
+      {#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function() {
+        if (xhr.status !== 200) {
+          alert('Request failed.  Returned status of ' + xhr.status);
+        }
+        else{
+          cleanImageList();
+          var response = JSON.parse(xhr.response);
+          for(var image in response.images)
+          {
+            addImageToList(response.images[image]);
+          }
+        }
+      };
+      {#      xhr.send(encodeURI('name=' + newName));#}
+      xhr.send();
+      // Your code to run since DOM is loaded and ready
+    }
+
     function showCode() {
       // Generate JavaScript code and display it.
       Blockly.Python.INFINITE_LOOP_TRAP = null;

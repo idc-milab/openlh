@@ -96,7 +96,6 @@ Blockly.defineBlocksWithJsonArray(
       "tooltip": "",
       "helpUrl": ""
     },
-
     {
       "type": "robot_wrist",
       "message0": "Move wrist: %1 %2",
@@ -114,6 +113,60 @@ Blockly.defineBlocksWithJsonArray(
       "previousStatement": null,
       "nextStatement": null,
       "colour": 230,
+      "tooltip": "",
+      "helpUrl": ""
+    },
+    {
+      "type": "robot_sleep",
+      "message0": "Sleep: %1",
+      "args0": [
+        {
+          "type": "field_number",
+          "name": "duration",
+          "value": 0
+        }
+      ],
+      "inputsInline": true,
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": 200,
+      "tooltip": "",
+      "helpUrl": ""
+    },
+    {
+      "type": "print_image",
+      "message0": "Image: %1 Starting Point: %2 Pipette Pick-Up: %3 Liquid Position: %4 Disposal Point: %5",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "image_name",
+          "check": "String"
+        },
+        {
+          "type": "input_value",
+          "name": "starting_point",
+          "check": "robot_position"
+        },
+        {
+          "type": "input_value",
+          "name": "pipette_pick",
+          "check": "robot_position"
+        },
+        {
+          "type": "input_value",
+          "name": "liquid_point",
+          "check": "robot_position"
+        },
+        {
+          "type": "input_value",
+          "name": "disposal_point",
+          "check": "robot_position"
+        }
+      ],
+      "inputsInline": false,
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": 30,
       "tooltip": "",
       "helpUrl": ""
     }
@@ -162,7 +215,7 @@ Blockly.Python['robot_position'] = function(block) {
   code += "\'y\':" + valueOrNone(value_y) + ", ";
   code += "\'z\':" + valueOrNone(value_z) + ", ";
   code += "\'e\':" + valueOrNone(value_e) + ", ";
-  code += "\'s\':" + valueOrNone(value_s);
+  code += "\'speed\':" + valueOrNone(value_s);
   code += '}';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
@@ -182,6 +235,126 @@ Blockly.Python['robot_move'] = function(block) {
 Blockly.Python['robot_wrist'] = function(block) {
   var angle = block.getFieldValue('Angle');
   var code = 'swift.set_wrist('+angle+')\nsleep(1)\n';
+  return code;
+};
+
+
+Blockly.Python['robot_sleep'] = function(block) {
+  var dur = block.getFieldValue('duration');
+  var code = 'sleep(' + dur + ')\n';
+  return code;
+};
+
+
+Blockly.Python['print_image'] = function(block) {
+  var image = Blockly.Python.valueToCode(block, 'image_name', Blockly.Python.ORDER_ATOMIC);
+  var pipette_position = Blockly.Python.valueToCode(block, 'pipette_pick', Blockly.Python.ORDER_ATOMIC);
+  var disposal_position = Blockly.Python.valueToCode(block, 'disposal_point', Blockly.Python.ORDER_ATOMIC);
+  var starting_position = Blockly.Python.valueToCode(block, 'starting_point', Blockly.Python.ORDER_ATOMIC);
+  var liquid_position = Blockly.Python.valueToCode(block, 'liquid_point', Blockly.Python.ORDER_ATOMIC);
+
+  var image_edit = image.replace(/'/g, '');
+  var image_format = image_edit + '.coords';
+
+  // Converting the image to coords file
+  // var code = 'os.system(os.path.join(\'uploads\', \'convert.bat\') + \' \' + ' + image + ')\n';
+  var code = 'image_format = \'' + image_format + '\'\n';
+
+  // Reading the coords file into a list
+  code += 'print(\'retrieveing coords from ' + image_format + '\')\n';
+  code += 'coords = []\n';
+  code += 'with open(os.path.join(\'uploads\\coords\', \'' + image_format + '\'), \'r\') as f\:\n';
+  code += '    for line in f\:\n';
+  code += '        x\, y = line.strip().split(\"\,\")\n';
+  code += '        coords.append((float(x), float(y)))\n';
+  // code += 'os.chdir(cwd)\n'; // Returns to project directory
+
+  // Initializing required variables
+  code += 'current_liquid = 0\n';
+  code += 'release_step = 0.025\n';
+  code += 'total_liquid = release_step * (len(coords) + 100)\n';
+  code += 'step_proportional = 2\n';
+  code += 'protection_sip = 1.5\n';
+
+  // Resetting arm position to home
+  code += 'swift.set_wrist(90)\n';
+  code += 'swift.set_position(120, 0, 50, speed=15000, wait=True)\n';
+
+  // Initializing required positions
+  code += 'pip_args = ' + pipette_position + '\n'; // Pipette pick up Point
+  code += "pip_args[\'wait\'] = True \n";
+  code += 'start_args = ' + starting_position + '\n'; // Starting Point
+  code += "start_args[\'wait\'] = True \n";
+  code += 'starting_x = start_args[\'x\']\n';
+  code += 'starting_y = start_args[\'y\']\n';
+  code += 'printing_z = start_args[\'z\']\n';
+  code += 'liquid_args = ' + liquid_position + '\n'; // Liquid Point
+  code += "liquid_args[\'wait\'] = True \n";
+  code += 'disposal_args = ' + disposal_position + '\n'; // Disposal Point
+  code += "disposal_args[\'wait\'] = True \n";
+
+  // Moving to pipette pick up location, while preserving arm's height
+  code += 'temp_z = pip_args[\'z\']\n';
+  code += 'pip_args[\'z\'] = 60\n';
+  code += 'swift.set_position(**pip_args)\n'; // Moving to pipette pick-up point
+  code += 'pip_args[\'z\'] = temp_z\n';
+  code += 'swift.set_position(**pip_args)\n'; // Acquiring pipette
+  code += 'sleep(1)\n';
+  code += 'swift.set_position(z=60, speed=1500, timeout=30, wait=True)\n';
+
+  // Moving to liquid location, while preserving arm's height
+  code += 'temp_z = liquid_args[\'z\']\n';
+  code += 'liquid_args[\'z\'] = 60\n';
+  code += 'swift.set_position(**liquid_args)\n'; // Moves to liquid point
+  code += 'liquid_args[\'z\'] = temp_z\n';
+  code += 'swift.set_position(**liquid_args)\n';
+  // Extrude the liquid according to the amount of coords
+  code += 'swift.set_position(e=total_liquid, speed=1500, timeout=30, wait=True)\n';
+  code += 'current_liquid = total_liquid\n';
+  code += 'swift.set_position(z=60, speed=30000, timeout=30, wait=True)\n';
+  // Moves to printing starting point
+  code += 'swift.set_position(x = (step_proportional * coords[0][0] ) + starting_x,' +
+      'y = (step_proportional * coords[0][1] ) + starting_y, z = 60 ,speed=30000, timeout=30, wait=True)\n';
+
+  // Printing image's coords
+  code += 'picture = coords\n';
+  code += 'total_len = len(picture)\n';
+  code += 'current_step = 0\n';
+  code += 'for x, y in picture:\n';
+  code += '    current_step += 1\n';
+  code += '    print("{c_step}/{total}".format(c_step=current_step, total=total_len))\n';
+  code += '    current_liquid -= release_step\n';
+  code += '    print(x, y)\n';
+  code += '    swift.set_position(x=starting_x + (step_proportional * x), y=starting_y + (step_proportional * y), wait=True, speed=1500)\n';
+  code += '    sleep(0.3)\n';
+  code += '    swift.set_position(z=printing_z, wait=True)\n';
+  code += '    swift.set_position(e=current_liquid, wait=True, speed=500)\n';
+  code += '    swift.set_position(z=printing_z + 3, wait=True)\n';
+
+
+  // Printing last step
+  code += 'current_liquid -= release_step\n';
+  code += 'swift.set_position(z=printing_z, wait=True)\n';
+  code += 'swift.set_position(e=current_liquid, wait=True, speed=300)\n';
+  code += 'swift.set_position(z=printing_z+3, wait=True)\n';
+
+  // Releasing the rest of the liquid
+  code += 'swift.set_position(e=current_liquid+protection_sip)\n';
+
+  // Dropping off the pipette at disposal area
+  code += 'swift.set_position(z=-40, wait=True)\n';
+  code += 'swift.set_position(z=85, speed=30000, wait=True)\n';
+  code += 'temp_z = disposal_args[\'z\']\n';
+  code += 'disposal_args[\'z\'] = 85\n'
+  code += 'swift.set_position(**disposal_args)\n';
+  code += 'swift.set_position(z = temp_z, speed=30000, timeout=20, wait=True)\n';
+  code += 'swift.set_wrist(0, wait=True)\n';
+  code += 'sleep(1)\n';
+  code += 'swift.set_wrist(90, wait=True)\n';
+  code += 'sleep(2)\n';
+  code += 'swift.set_position(z=85, speed=30000, wait=True)\n';
+
+
   return code;
 };
 
