@@ -169,7 +169,23 @@ Blockly.defineBlocksWithJsonArray(
       "colour": 30,
       "tooltip": "",
       "helpUrl": ""
-    }
+    },
+    {
+    "type": "robot_pump",
+    "message0": "Pump On: %1",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "pump_state"
+      }
+    ],
+    "inputsInline": true,
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": 200,
+    "tooltip": "",
+    "helpUrl": ""
+  }
   ]
 );  // END JSON EXTRACT (Do not delete this comment.)
 function valueOrNone(arg) {
@@ -358,3 +374,8 @@ Blockly.Python['print_image'] = function(block) {
   return code;
 };
 
+Blockly.Python['robot_pump'] = function(block) {
+  var state = Blockly.Python.valueToCode(block, 'pump_state', Blockly.Python.ORDER_ATOMIC);
+  var code = 'swift.set_pump(on='+state+')\n';
+  return code;
+};
