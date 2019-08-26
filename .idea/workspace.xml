@@ -2,6 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2886a7eb-ebf4-4bed-8f77-f66e8d4eba13" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/live_position.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/Tomer_test.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/Tomer_test2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/hackathon_demo.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/hackathon_final.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/hackathon_final_demo.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/hackathon_final_ver.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/programs/hackathon_last_version.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/test" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_position2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_time.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testfile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/37687838_10211937988345713_1851161059541385216_n.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/Screenshot_20180627-205812.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/Screenshot_20180627-233543.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/coords/herzelidcflip.png.coords" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/herzel_black12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/orenshalev_182.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,13 +38,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="ProjectId" id="1OdiUwU65XivSf72DZXJ6ZtYOUJ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../labloco" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -207,7 +227,9 @@
       <workItem from="1564905466706" duration="20000" />
       <workItem from="1566214072173" duration="2594000" />
       <workItem from="1566217809816" duration="21965000" />
-      <workItem from="1566816303577" duration="244000" />
+      <workItem from="1566816303577" duration="297000" />
+      <workItem from="1566816790320" duration="155000" />
+      <workItem from="1566816962819" duration="814000" />
     </task>
     <task id="LOCAL‎00001" summary="fixed a bug at listener.py: allowing multiple plays one after the other.">
       <created>1566816003373</created>
@@ -215,7 +237,13 @@
       <option name="presentableId" value="LOCAL‎00001" />
       <updated>1566816003374</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL‎00002" summary="fixed a bug at listener.py: allowing multiple plays one after the other.">
+      <created>1566816571034</created>
+      <option name="number" value="LOCAL‎00002" />
+      <option name="presentableId" value="LOCAL‎00002" />
+      <updated>1566816571034</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
