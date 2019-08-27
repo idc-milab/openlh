@@ -1,0 +1,30 @@
+from uf.wrapper.swift_api import SwiftAPI
+from uf.utils.log import *
+from time import sleep, time
+
+logger_init(logging.DEBUG)
+global swift
+swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}
+sleep(2)
+print("Allowing extrusion")
+swift.send_cmd_sync("M302 S0")
+
+
+def report_position(position):
+    file = open("live_position.txt", "a")
+    print("x:{x} y:{y} z:{z} ".format(x=position[0], y=position[1], z=position[2]))
+    file.write(("x:{x} y:{y} z:{z}".format(x=position[0], y=position[1], z=position[2])))
+    file.close()
+    swift.send_cmd_sync("M17")
+    exit()
+
+sleep(2)
+swift.send_cmd_sync("M2019")
+swift.register_report_position_callback(report_position)
+swift.set_report_position(0.5)
+
+while (True):
+    pass
+# swift.set_position(e=0, speed=1500, timeout=30, wait=True)
+# swift.set_position(120, 0, 50, speed=1500, timeout=30, wait=True)
+# swift.close_conn()

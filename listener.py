@@ -1,11 +1,8 @@
 import argparse
+import traceback
 
 from pythonosc import dispatcher
 from pythonosc import osc_server
-import os
-from time import sleep
-from uf.wrapper.swift_api import SwiftAPI
-from uf.utils.log import logger_init, logging
 
 ADDRESS = "/Instructions"
 
@@ -26,22 +23,22 @@ swift = None
 #         response.send_cmd_sync("M302 S0")
 #     return response
 
+
 def print_function(address="default", data="default"):
-    print("__ Message Received ___")
-    global message
-    # global swift
-    message += data
-    if message[-3:] == "xxx":
-        print("\t+ Message completed do whatever you want.")
-        print(message)
-        # swift = init_swift(swift)
-        # Execute code.
-        exec(message[:-3])
+    try:
+        print("__ Message Received ___")
+        global message
+        message += data
+        if message[-3:] == "xxx":
+            print("\t+ Message completed do whatever you want.")
+            print(message)
+            # Execute code.
+            exec(message[:-3])
 
-        # Clean message buffer
-        message = ""
-    # exec(value)
-
+            # Clean message buffer
+            message = ""
+    except Exception as e:
+        print('Error, Msg: %s, %s' % (e, traceback.format_exc()))
 
 # Set up address and port.
 parser = argparse.ArgumentParser()
