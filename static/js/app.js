@@ -78,13 +78,81 @@ Blockly.defineBlocksWithJsonArray(
             "helpUrl": ""
         },
         {
+            "type": "robot_position_with_custom_position",
+            "message0": "Position %1 E %2 S %3",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "Position",
+                    "check": ["robot_position", "robot_position_location_only"]
+                },
+                {
+                    "type": "input_value",
+                    "name": "E",
+                    "check": "Number"
+                },
+                {
+                    "type": "input_value",
+                    "name": "S",
+                    "check": "Number"
+                }
+            ],
+            "inputsInline": true,
+            "output": null,
+            "colour": 300,
+            "tooltip": "",
+            "helpUrl": ""
+        },
+        {
             "type": "robot_move",
             "message0": "Move to: %1",
             "args0": [
                 {
                     "type": "input_value",
                     "name": "position",
-                    "check": "robot_position"
+                    "check": ["robot_position", "robot_position_location_only"]
+                }
+            ],
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 230,
+            "tooltip": "",
+            "helpUrl": ""
+        },
+        {
+            "type": "robot_position_location_only",
+            "message0": "X %1 Y %2 Z %3",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "X",
+                    "check": "Number"
+                },
+                {
+                    "type": "input_value",
+                    "name": "Y",
+                    "check": "Number"
+                },
+                {
+                    "type": "input_value",
+                    "name": "Z",
+                    "check": "Number"
+                }
+            ],
+            "inputsInline": true,
+            "output": null,
+            "colour": 285,
+            "tooltip": "",
+            "helpUrl": ""
+        },
+        {
+            "type": "robot_move",
+            "message0": "Move to: %1",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "position",
+                    "check": ["robot_position", "robot_position_location_only"]
                 }
             ],
             "previousStatement": null,
@@ -142,22 +210,22 @@ Blockly.defineBlocksWithJsonArray(
                 {
                     "type": "input_value",
                     "name": "starting_point",
-                    "check": "robot_position"
+                    "check": ["robot_position", "robot_position_location_only"]
                 },
                 {
                     "type": "input_value",
                     "name": "pipette_pick",
-                    "check": "robot_position"
+                    "check": ["robot_position", "robot_position_location_only"]
                 },
                 {
                     "type": "input_value",
                     "name": "liquid_point",
-                    "check": "robot_position"
+                    "check": ["robot_position", "robot_position_location_only"]
                 },
                 {
                     "type": "input_value",
                     "name": "disposal_point",
-                    "check": "robot_position"
+                    "check": ["robot_position", "robot_position_location_only"]
                 }
             ],
             "inputsInline": false,
@@ -194,6 +262,11 @@ function valueOrNone(arg) {
 
 }
 
+function extractCoordsFromValuePosition(value_position) {
+    let re = /'x':(.*), 'y':(.*), 'z':(.*)}/;
+    return [RegExp.$1, RegExp.$1, RegExp.$1];
+}
+
 // Blockly.Python['robot_position'] = function(block) {
 //   // block.getFie
 //   var number_x = valueOrNone(block.getFieldValue('X'));
@@ -225,6 +298,46 @@ Blockly.Python['robot_position'] = function (block) {
     code += "\'x\':" + valueOrNone(value_x) + ", ";
     code += "\'y\':" + valueOrNone(value_y) + ", ";
     code += "\'z\':" + valueOrNone(value_z) + ", ";
+    code += "\'e\':" + valueOrNone(value_e) + ", ";
+    code += "\'speed\':" + valueOrNone(value_s);
+    code += '}';
+    // TODO: Change ORDER_NONE to the correct strength.
+    return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['robot_position_location_only'] = function (block) {
+    var value_x = Blockly.Python.valueToCode(block, 'X', Blockly.Python.ORDER_ATOMIC);
+    var value_y = Blockly.Python.valueToCode(block, 'Y', Blockly.Python.ORDER_ATOMIC);
+    var value_z = Blockly.Python.valueToCode(block, 'Z', Blockly.Python.ORDER_ATOMIC);
+
+    // TODO: Assemble JavaScript into code variable.
+    // var code = '...';
+
+    var code = "{";
+    code += "\'x\':" + valueOrNone(value_x) + ", ";
+    code += "\'y\':" + valueOrNone(value_y) + ", ";
+    code += "\'z\':" + valueOrNone(value_z);
+    code += '}';
+    // TODO: Change ORDER_NONE to the correct strength.
+    return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['robot_position_with_custom_position'] = function (block) {
+    let value_position = Blockly.Python.valueToCode(block, 'Position', Blockly.Python.ORDER_ATOMIC);
+    let value_e = Blockly.Python.valueToCode(block, 'E', Blockly.Python.ORDER_ATOMIC);
+    let value_s = Blockly.Python.valueToCode(block, 'S', Blockly.Python.ORDER_ATOMIC);
+
+    // TODO: Assemble JavaScript into code variable.
+    // var code = '...';
+
+    // regex to extract X Y Z coords
+    let re = /'x':(.*), 'y':(.*), 'z':(.*)}/;
+    value_position.replace(re, ''); // "Smith, John"
+
+    var code = "{";
+    code += "\'x\':" + valueOrNone(RegExp.$1) + ", ";
+    code += "\'y\':" + valueOrNone(RegExp.$2) + ", ";
+    code += "\'z\':" + valueOrNone(RegExp.$3) + ", ";
     code += "\'e\':" + valueOrNone(value_e) + ", ";
     code += "\'speed\':" + valueOrNone(value_s);
     code += '}';

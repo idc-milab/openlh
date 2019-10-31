@@ -6,9 +6,9 @@ from pythonosc import osc_server
 
 ADDRESS = "/Instructions"
 
-
 message = ""
 swift = None
+
 
 # def init_swift(swift):
 #     response = None
@@ -40,6 +40,7 @@ def print_function(address="default", data="default"):
     except Exception as e:
         print('Error, Msg: %s, %s' % (e, traceback.format_exc()))
 
+
 # Set up address and port.
 parser = argparse.ArgumentParser()
 parser.add_argument("--ip",
@@ -56,4 +57,3 @@ server = osc_server.ThreadingOSCUDPServer(
 print("Serving on {}".format(server.server_address))
 
 server.serve_forever()
-
