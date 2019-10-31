@@ -21,7 +21,7 @@ M2019      # for all, or
 M2202 N0~3 # for specified joint
 """
 swift.register_report_position_callback(report_position)
-swift.set_report_position(0.5)
+swift.set_report_position(1)
 
 while(True):
     pass
