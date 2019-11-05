@@ -332,9 +332,9 @@ Blockly.Python['robot_position_with_custom_position'] = function (block) {
 
     // regex to extract X Y Z coords
     let re = /'x':(.*), 'y':(.*), 'z':(.*)}/;
-    value_position.replace(re, ''); // "Smith, John"
+    value_position.replace(re, '');
 
-    var code = "{";
+    let code = "{";
     code += "\'x\':" + valueOrNone(RegExp.$1) + ", ";
     code += "\'y\':" + valueOrNone(RegExp.$2) + ", ";
     code += "\'z\':" + valueOrNone(RegExp.$3) + ", ";
