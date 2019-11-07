@@ -64,7 +64,23 @@ def save_xml():
     file_name = construct_file_name(name)
     with open(file_name, "w") as file:
         file.write(xml)
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
+
+@app.route('/delete_image', methods=['POST'])
+def delete_image():
+    name = request.json['name']
+    os.remove("uploads/" + name)  # removes the png file
+    os.remove("uploads/coords/" + name + ".coords")  # removes the coords file
+    os.remove("templates/" + name + ".html")  # removes the html template file
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/delete_xml', methods=['POST'])
+def delete_xml():
+    name = request.json['name']
+    file_name = construct_file_name(name)
+    os.remove(file_name)  # removes the xml file
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 

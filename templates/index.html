@@ -708,15 +708,22 @@
       ul.className = "mdl-list";
       li.className = "mdl-list__item";
       li.appendChild(document.createTextNode(programName));
-      let button = document.createElement("BUTTON");
-      button.textContent = "Load";
-      button.onclick = function () {
+      let loadButton = document.createElement("BUTTON");
+      let delete_button = document.createElement("BUTTON");
+      loadButton.textContent = "Load";
+      loadButton.onclick = function () {
           getProgram(programName);
           alert(programName + " was loaded successfully.")
       };
+      delete_button.innerHTML = "<i class=\"fa fa-trash\"></i>"
+      delete_button.onclick = function () {
+          deleteProgram(programName)
+          li.parentNode.removeChild(li);
+      };
       let var_space = document.createTextNode("    ->    ");
       li.appendChild(var_space);
-      li.appendChild(button);
+      li.appendChild(loadButton);
+      li.appendChild(delete_button);
       ul.appendChild(li);
     }
 
@@ -727,14 +734,22 @@
       ul.className = "mdl-list";
       li.className = "mdl-list__item";
       li.appendChild(document.createTextNode(imageName));
-      let button = document.createElement("BUTTON");
-      button.textContent = "Show Layout";
-      button.onclick = function () {
+      let layout_button = document.createElement("BUTTON");
+      let delete_button = document.createElement("BUTTON");
+      layout_button.textContent = "Show Layout";
+      layout_button.onclick = function () {
           window.open("./" + imageName + ".html")
+      };
+      delete_button.textContent = "Delete";
+      delete_button.innerHTML = "<i class=\"fa fa-trash\"></i>"
+      delete_button.onclick = function () {
+          deleteImage(imageName)
+          li.parentNode.removeChild(li);
       };
       let var_space = document.createTextNode("    ->    ");
       li.appendChild(var_space);
-      li.appendChild(button);
+      li.appendChild(layout_button);
+      li.appendChild(delete_button);
       ul.appendChild(li);
     }
 
@@ -995,6 +1010,36 @@
       {#      xhr.send(encodeURI('name=' + newName));#}
       xhr.send(JSON.stringify({xml: xml_text, name: program_name}));
 
+    }
+
+    function deleteProgram(programName)
+    {
+        let xhr = new XMLHttpRequest();
+         xhr.open('POST', 'delete_xml');
+      {#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function() {
+        if (xhr.status !== 200) {
+          alert('Request failed.  Returned status of ' + xhr.status);
+        }
+      };
+      {#      xhr.send(encodeURI('name=' + newName));#}
+      xhr.send(JSON.stringify({name: programName}));
+    }
+
+    function deleteImage(image_name)
+    {
+        let xhr = new XMLHttpRequest();
+         xhr.open('POST', 'delete_image');
+      {#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function() {
+        if (xhr.status !== 200) {
+          alert('Request failed.  Returned status of ' + xhr.status);
+        }
+      };
+      {#      xhr.send(encodeURI('name=' + newName));#}
+      xhr.send(JSON.stringify({name: image_name}));
     }
 
   </script>
