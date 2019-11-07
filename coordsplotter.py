@@ -4,7 +4,6 @@ from bokeh.models import Range1d
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
-
 filename = sys.argv[1]
 x_coords = []
 y_coords = []
