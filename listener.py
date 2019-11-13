@@ -1,27 +1,21 @@
+#
+# A listener registered to receive messages which was sent from the app through SimpleUDPClient.
+# The message will include strings with python code including instructions for the arm - using SwiftAPI and generated
+# on the Blockly environment. messages will always end with "xxx" string, indicating that the whole message successfully
+# transferred.
+#
+
 import argparse
 import traceback
-
+# import sys
+# sys.path.append('pyuf/')
 from pythonosc import dispatcher
 from pythonosc import osc_server
+# from uf.wrapper.swift_api import SwiftAPI
 
 ADDRESS = "/Instructions"
-
 message = ""
 swift = None
-
-
-# def init_swift(swift):
-#     response = None
-#     if(not swift):
-#         logger_init(logging.DEBUG)
-#         response = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}
-#         print('sleep 2 sec ...')
-#         sleep(2)
-#         print('device info: ')
-#         print(response.get_device_info())
-#         print("Allowing extrusion")
-#         response.send_cmd_sync("M302 S0")
-#     return response
 
 
 def print_function(address="default", data="default"):
@@ -32,6 +26,7 @@ def print_function(address="default", data="default"):
         if message[-3:] == "xxx":
             print("\t+ Message completed do whatever you want.")
             print(message)
+
             # Execute code.
             exec(message[:-3])
 
@@ -55,5 +50,4 @@ dispatch.map(ADDRESS, print_function)
 server = osc_server.ThreadingOSCUDPServer(
     (args.ip, args.port), dispatch)
 print("Serving on {}".format(server.server_address))
-
 server.serve_forever()
