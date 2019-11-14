@@ -253,6 +253,12 @@ Blockly.defineBlocksWithJsonArray(
         }
     ]
 );  // END JSON EXTRACT (Do not delete this comment.)
+
+/**
+ * replace empty arg strings with None.
+ * otherwise, return arg
+ * @param   {string}    arg     argument
+ */
 function valueOrNone(arg) {
     if (arg === "") {
         return 'None';
@@ -267,23 +273,6 @@ function extractCoordsFromValuePosition(value_position) {
     return [RegExp.$1, RegExp.$1, RegExp.$1];
 }
 
-// Blockly.Python['robot_position'] = function(block) {
-//   // block.getFie
-//   var number_x = valueOrNone(block.getFieldValue('X'));
-//   var number_y = valueOrNone(block.getFieldValue('Y'));
-//   var number_z = valueOrNone(block.getFieldValue('Z'));
-//   var number_e = valueOrNone(block.getFieldValue('E'));
-//   // TODO: Assemble Python into code variable.
-//
-//   var code = "{";
-//   code += "\'x\':" + number_x + ", ";
-//   code += "\'y\':" + (number_y) + ", ";
-//   code += "\'z\':" + (number_z) + ", ";
-//   code += "\'e\':" + (number_e);
-//   code += '}';
-//   // TODO: Change ORDER_NONE to the correct strength.
-//   return [code, Blockly.Python.ORDER_NONE];
-// };
 
 Blockly.Python['robot_position'] = function (block) {
     var value_x = Blockly.Python.valueToCode(block, 'X', Blockly.Python.ORDER_ATOMIC);
@@ -291,9 +280,8 @@ Blockly.Python['robot_position'] = function (block) {
     var value_z = Blockly.Python.valueToCode(block, 'Z', Blockly.Python.ORDER_ATOMIC);
     var value_e = Blockly.Python.valueToCode(block, 'E', Blockly.Python.ORDER_ATOMIC);
     var value_s = Blockly.Python.valueToCode(block, 'S', Blockly.Python.ORDER_ATOMIC);
-    // TODO: Assemble JavaScript into code variable.
-    // var code = '...';
 
+    // generate python code
     var code = "{";
     code += "\'x\':" + valueOrNone(value_x) + ", ";
     code += "\'y\':" + valueOrNone(value_y) + ", ";
@@ -301,7 +289,7 @@ Blockly.Python['robot_position'] = function (block) {
     code += "\'e\':" + valueOrNone(value_e) + ", ";
     code += "\'speed\':" + valueOrNone(value_s);
     code += '}';
-    // TODO: Change ORDER_NONE to the correct strength.
+
     return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -309,16 +297,14 @@ Blockly.Python['robot_position_location_only'] = function (block) {
     var value_x = Blockly.Python.valueToCode(block, 'X', Blockly.Python.ORDER_ATOMIC);
     var value_y = Blockly.Python.valueToCode(block, 'Y', Blockly.Python.ORDER_ATOMIC);
     var value_z = Blockly.Python.valueToCode(block, 'Z', Blockly.Python.ORDER_ATOMIC);
-
-    // TODO: Assemble JavaScript into code variable.
-    // var code = '...';
-
+    
+    // generate python code
     var code = "{";
     code += "\'x\':" + valueOrNone(value_x) + ", ";
     code += "\'y\':" + valueOrNone(value_y) + ", ";
     code += "\'z\':" + valueOrNone(value_z);
     code += '}';
-    // TODO: Change ORDER_NONE to the correct strength.
+    
     return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -327,13 +313,11 @@ Blockly.Python['robot_position_with_custom_position'] = function (block) {
     let value_e = Blockly.Python.valueToCode(block, 'E', Blockly.Python.ORDER_ATOMIC);
     let value_s = Blockly.Python.valueToCode(block, 'S', Blockly.Python.ORDER_ATOMIC);
 
-    // TODO: Assemble JavaScript into code variable.
-    // var code = '...';
-
     // regex to extract X Y Z coords
     let re = /'x':(.*), 'y':(.*), 'z':(.*)}/;
     value_position.replace(re, '');
 
+    // generate python code
     let code = "{";
     code += "\'x\':" + valueOrNone(RegExp.$1) + ", ";
     code += "\'y\':" + valueOrNone(RegExp.$2) + ", ";
@@ -341,14 +325,15 @@ Blockly.Python['robot_position_with_custom_position'] = function (block) {
     code += "\'e\':" + valueOrNone(value_e) + ", ";
     code += "\'speed\':" + valueOrNone(value_s);
     code += '}';
-    // TODO: Change ORDER_NONE to the correct strength.
+
     return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['robot_move'] = function (block) {
     var value_position = Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC);
-    // TODO: Assemble Python into code variable.
     console.log(value_position);
+
+    // generate python code
     var code = "dict_args = " + value_position + " \n";
     code += "dict_args[\'wait\'] = True \n";
     code += "swift.set_position(**dict_args)\n";
@@ -376,9 +361,6 @@ Blockly.Python['print_image'] = function (block) {
 
     var image_edit = image.replace(/'/g, '');
     var image_format = image_edit + '.coords';
-
-    // Converting the image to coords file
-    // var code = 'os.system(os.path.join(\'uploads\', \'convert.bat\') + \' \' + ' + image + ')\n';
     var code = 'image_format = \'' + image_format + '\'\n';
 
     // Reading the coords file into a list
@@ -389,7 +371,6 @@ Blockly.Python['print_image'] = function (block) {
     code += '    for line in f\:\n';
     code += '        x\, y = line.strip().split(\"\,\")\n';
     code += '        coords.append((float(x), float(y)))\n';
-    // code += 'os.chdir(cwd)\n'; // Returns to project directory
 
     // Initializing required variables
     code += 'current_liquid = 0\n';
@@ -462,18 +443,16 @@ Blockly.Python['print_image'] = function (block) {
 
     // Releasing the rest of the liquid
     // code += 'swift.set_position(e=current_liquid-protection_sip)\n';
-//
-//  // Dropping off the pipette at disposal area
+    // Dropping off the pipette at disposal area
     code += 'swift.set_position(e=current_liquid, z=155, speed=30000, wait=True)\n';
     code += 'temp_z = disposal_args[\'z\']\n';
     code += 'disposal_args[\'z\'] = 155\n';
     code += 'swift.set_position(x=269, y=-90, z=155, e=current_liquid, speed=30000, wait=True)\n';
     code += 'swift.set_position(z = 155, speed=30000, timeout=20, wait=True)\n';
     code += 'swift.set_position(e=0, speed=30000, timeout=20, wait=True)\n';
-//  code += 'swift.set_wrist(0)\n';
-//  code += 'swift.set_wrist(90)\n';
-//  code += 'swift.set_position(z=150, speed=30000, wait=True)\n';
-
+    code += 'swift.set_wrist(0)\n';
+    code += 'swift.set_wrist(90)\n';
+    code += 'swift.set_position(z=150, speed=30000, wait=True)\n';
 
     return code;
 };
