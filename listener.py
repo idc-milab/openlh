@@ -7,11 +7,11 @@
 
 import argparse
 import traceback
-# import sys
-# sys.path.append('pyuf/')
+import sys
+sys.path.append('pyuf/')
 from pythonosc import dispatcher
 from pythonosc import osc_server
-# from uf.wrapper.swift_api import SwiftAPI
+
 
 ADDRESS = "/Instructions"
 message = ""

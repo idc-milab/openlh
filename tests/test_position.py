@@ -4,7 +4,6 @@ from uf.wrapper.swift_api import SwiftAPI
 from uf.utils.log import *
 logger_init(logging.DEBUG)
 
-
 def report_position(position):
     print("x:{x} y:{y} z:{z} ".format(x=position[0], y=position[1], z=position[2]))
 

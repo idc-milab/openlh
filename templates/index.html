@@ -10,7 +10,7 @@
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <meta charset="utf-8">
-    <title>Blockly Demo: Generating JavaScript</title>
+    <title>OpenLH</title>
     <script src="static/js/blockly_compressed.js"></script>
     <script src="static/js/blocks_compressed.js"></script>
     <script src="static/js/javascript_compressed.js"></script>
@@ -677,16 +677,18 @@
     </xml>
 
     <script>
-
+        // init the Blockly workspace
         let demoWorkspace = Blockly.inject('blocklyDiv',
             {
                 media: '../../media/',
                 toolbox: document.getElementById('toolbox')
             });
+
+        // load starting blocks
         Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
             demoWorkspace);
 
-
+        // load saved programs and uploaded images lists (to the tabs at the bottom)
         document.addEventListener("DOMContentLoaded", function (event) {
             getPrograms();
             getImages();
@@ -703,6 +705,7 @@
             let xml = Blockly.Xml.textToDom(xmlText);
             Blockly.Xml.domToWorkspace(xml, demoWorkspace);
         }
+
 
         /**
          * gets a program name and requests the xml text from the server
@@ -723,6 +726,7 @@
             };
             xhr.send(null);
         }
+
 
         /**
          * adds programName to the programs list.
@@ -754,6 +758,7 @@
             ul.appendChild(li);
         }
 
+
         /**
          * adds imageName to the images list.
          * including Show Layout and trash buttons
@@ -764,6 +769,7 @@
             let li = document.createElement("li");
             ul.className = "mdl-list";
             li.className = "mdl-list__item";
+
             li.appendChild(document.createTextNode(imageName));
             let layoutButton = document.createElement("BUTTON");
             let deleteButton = document.createElement("BUTTON");
@@ -778,10 +784,45 @@
                 li.parentNode.removeChild(li);
             };
             let varSpace = document.createTextNode("    ->    ");
+
             li.appendChild(varSpace);
             li.appendChild(layoutButton);
             li.appendChild(deleteButton);
             ul.appendChild(li);
+        }
+
+        
+        /**
+         * delete a program from the saved programs list.
+         * @param   {string}    programName     name of the saved program
+         */
+         function deleteProgram(programName) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'delete_xml');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function () {
+                if (xhr.status !== 200) {
+                    alert('Request failed.  Returned status of ' + xhr.status);
+                }
+            };
+            xhr.send(JSON.stringify({ name: programName }));
+        }
+
+
+        /**
+         * delete an image from the uploaded images list.
+         * @param   {string}    programName     name of the uploaded image
+         */
+        function deleteImage(imageName) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'delete_image');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function () {
+                if (xhr.status !== 200) {
+                    alert('Request failed.  Returned status of ' + xhr.status);
+                }
+            };
+            xhr.send(JSON.stringify({ name: imageName }));
         }
 
 
@@ -791,11 +832,13 @@
             ul.innerHTML = "";
         }
 
+
         /** cleans the uploaded images list */
         function cleanImageList() {
             let ul = document.getElementById("listOfImages");
             ul.innerHTML = "";
         }
+
 
         /** requests a list of the saved programs from server and add their names to the programs list. */
         function getPrograms() {
@@ -818,6 +861,7 @@
             //      xhr.send(encodeURI('name=' + newName));#}
             xhr.send();
         }
+
 
         /** requests a list of the uploaded images from server and add their names to the uploaded images list. */
         function getImages() {
@@ -842,6 +886,7 @@
             xhr.send();
         }
 
+
         /** Generate JavaScript code and display it. */
         function showCode() {
 
@@ -850,7 +895,8 @@
             alert(code);
         }
 
-        /** Generate JavaScript code and run it. */
+
+        /** Generate JavaScript code and executes it. */
         function runCode() {
             window.LoopTrap = 1000;
             Blockly.JavaScript.INFINITE_LOOP_TRAP =
@@ -864,6 +910,12 @@
             }
         }
 
+
+        /** 
+         *  puts the arm's motors on disjoint mode, allowing the user to physically maneuver it to differnet locations.
+         *  will exit the mode (rejoin arm's motors) while the user is changing getting_position key in the live_position 
+         *  JSON file (by clicking 'Stop').
+         */
         function savePosition() {
             // manage buttons disabling
             document.getElementById("Add").disabled = false;
@@ -880,6 +932,7 @@
                 "logger_init(logging.DEBUG)\n" +
                 "swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}\n" +
                 "sleep(2)\n" +
+                // save the current location to live_position.JSON
                 "def report_position(position):\n" +
                 "    global getting_position\n" +
                 "    file = open(\"live_position.json\", \"r\")\n" +
@@ -894,16 +947,19 @@
                 "    json_text = \"{\" + json_text + \"}\"\n" +
                 "    file.write(json_text)\n" +
                 "    file.close()\n" +
+                // initialize the JSON file to default values
                 "file = open(\"live_position.json\", \"w\")\n" +
                 "json_text = \"{\\\"getting_position\\\": \\\"True\\\", \\\"x\\\": \\\"0\\\", \\\"y\\\": \\\"0\\\", \\\"z\\\": \\\"0\\\"}\"\n" +
                 "file.write(json_text)\n" +
                 "file.close()\n" +
                 "sleep(2)\n" +
+                // disjoin motors and write the position to the JSON file
                 "swift.send_cmd_sync(\"M2019\")\n" +
                 "swift.register_report_position_callback(report_position)\n" +
                 "swift.set_report_position(1)\n" +
                 "while getting_position == \"True\":\n" +
                 "    pass\n" +
+                // rejoin motors
                 "swift.send_cmd_sync(\"M302 S0\")\n" +
                 "sleep(1)\n" +
                 "swift.close_conn()\n";
@@ -920,7 +976,13 @@
             xhr.send(JSON.stringify({ code: code }));
         }
 
+
+        /** 
+         *  while in disjoint mode, request current X,Y,Z coordinates representing the position of the arm.
+         *  create a new block with those coordinates and add it to the workspace
+         */
         function addPositionBlock() {
+            // request position from server
             let xhr = new XMLHttpRequest();
             xhr.open('GET', 'get_position');
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -930,14 +992,25 @@
                 } else {
                     let position = JSON.parse(xhr.response).position;
                     console.log(position);
-                    let positionBlockXML = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"robot_position\" id=\"SyFPz*@(!ozue1(3%5~`\" x=\"227\" y=\"52\"><value name=\"X\"><block type=\"math_number\" id=\"U41TJc7#mA3P$!VMD:Oy\"><field name=\"NUM\">" + position.x + "}</field></block></value><value name=\"Y\"><block type=\"math_number\" id=\"@Xa(Koud`5?ynXVH`Z0|\"><field name=\"NUM\">" + position.y + "</field></block></value><value name=\"Z\"><block type=\"math_number\" id=\"mTi{~3]{.U[-wTtvoaoW\"><field name=\"NUM\">" + position.z + "</field></block></value></block></xml>"
-                    loadXml(positionBlockXML, false);
+                    // create the new block with string representing the xml and add it to workspace
+                    let positionBlockXML = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"> \
+                        <variables></variables><block type=\"robot_position\" id=\"SyFPz*@(!ozue1(3%5~`\" x=\"227\" y=\"52\"> \
+                        <value name=\"X\"><block type=\"math_number\" id=\"U41TJc7#mA3P$!VMD:Oy\"><field name=\"NUM\">" + position.x + "} \
+                        </field></block></value><value name=\"Y\"><block type=\"math_number\" id=\"@Xa(Koud`5?ynXVH`Z0|\"> \
+                        <field name=\"NUM\">" + position.y + "</field></block></value> \
+                        <value name=\"Z\"><block type=\"math_number\" id=\"mTi{~3]{.U[-wTtvoaoW\"><field name=\"NUM\">" + position.z + "</field> \
+                        </block></value></block></xml>"
+                    loadXml(positionBlockXML, false); 
                 }
 
             };
             xhr.send(null);
         }
 
+
+        /** 
+         *  changing getting_position key in the live_position JSON file to exit disjoint mode (rejoin arm's motors).
+         */
         function stopSavePosition() {
             // manage buttons disabling
             document.getElementById("Add").disabled = true;
@@ -946,7 +1019,7 @@
             document.getElementById("RunJavaScript").disabled = false;
             document.getElementById("Play").disabled = false;
 
-            
+            // send to server
             let xhr = new XMLHttpRequest();
             xhr.open('POST', 'stop_getting_position');
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -959,8 +1032,15 @@
 
         }
 
+
+        /**
+         * The begining of every python code we want to run with the arm, including:
+         * imports, loading swift API, 
+         */
         function getInitCode() {
             let code = '\n';
+            code += 'import sys\n';
+            code += "sys.path.append('pyuf/')\n";
             code += 'from uf.wrapper.swift_api import SwiftAPI\n';
             code += 'from uf.utils.log import *\n';
             code += 'from time import sleep\n';
@@ -968,12 +1048,17 @@
             code += 'global swift\n';
             code += "swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}\n";
             code += "sleep(2)\n";
-
             code += 'print("Allowing extrusion")\n';
-            code += 'swift.send_cmd_sync("M302 S0")\n';
+            // Set the minimum extrusion "temperature" to 0 (so we can use 3d printing features for liquid extrusion)
+            code += 'swift.send_cmd_sync("M302 S0")\n'; 
             return code;
         }
 
+
+        /**
+         * The ending of every python code we want to run with the arm, including:
+         * return to starting position and close connection
+         */
         function getFinalCode() {
             let code = '';
             code += 'swift.set_position(e=0, speed=1500, timeout=30, wait=True)\n';
@@ -982,7 +1067,11 @@
             code += 'swift.close_conn()\n';
             return code;
         }
+        
 
+        /**
+         * create python code from workspace, add init and final code and send to the server.
+         */
         function sendCode() {
             let code = Blockly.Python.workspaceToCode(demoWorkspace);
             xhr = new XMLHttpRequest();
@@ -998,11 +1087,15 @@
             xhr.send(JSON.stringify({ code: code }));
         }
 
+
+        /**
+         * Create a string representing the xml of the current workspace.
+         * Than send the string to the server in order to save as xml file
+         */
         function saveWorkspace() {
             let xml = Blockly.Xml.workspaceToDom(demoWorkspace);
             let xmlText = Blockly.Xml.domToText(xml);
             let programName = document.getElementById("programName").value;
-            //      Blockly.Xml.domToPrettyText#}
             alert(xmlText);
             let xhr = new XMLHttpRequest();
 
@@ -1022,33 +1115,6 @@
 
         }
 
-        function deleteProgram(programName) {
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'delete_xml');
-            //      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-            };
-            //      xhr.send(encodeURI('name=' + newName));#}
-            xhr.send(JSON.stringify({ name: programName }));
-        }
-
-        function deleteImage(imageName) {
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'delete_image');
-            //      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-            };
-            //      xhr.send(encodeURI('name=' + newName));#}
-            xhr.send(JSON.stringify({ name: imageName }));
-        }
 
     </script>
 

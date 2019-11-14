@@ -1,3 +1,6 @@
+#
+#
+#
 
 from flask import *
 from pythonosc.udp_client import SimpleUDPClient
@@ -62,8 +65,10 @@ def save_xml():
     create an xml file and save it on PROGRAMS_FOLDER.
     :return: JSON Indicating success (200)
     """
+    # for debugging purpose
     print(request.data)
     print(request.json)
+
     xml = request.json['xml']
     name = request.json['name']
     file_name = construct_program_name(name)
