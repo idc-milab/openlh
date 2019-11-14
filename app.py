@@ -1,12 +1,14 @@
-#
-#
-#
+"""
+Main app module. Dealing with all the different app routes (receiving XML HttpRequests from index.html)
+"""
 
+
+import os
 from flask import *
-from pythonosc.udp_client import SimpleUDPClient
 from os import listdir
 from os.path import isfile, join
-import os
+from pythonosc.udp_client import SimpleUDPClient
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.path.basename('uploads')
