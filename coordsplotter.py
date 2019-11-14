@@ -1,8 +1,8 @@
-#
-# This script receives a .coords file name as a parameter (a list of coordinates representing an image. created by
-# uploads/convert.bat) and generates an html page including a visual representation of the image. the html page
-# will be saved on the templates folder.
-#
+"""
+This script receives a .coords file name as a command line argument. The coords file is basically a list of coordinates
+representing an image (created by uploads/convert.bat). The script generates an html page including a visual
+representation of the image. the html page will be saved on the templates folder.
+"""
 
 import os
 import sys

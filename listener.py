@@ -1,18 +1,19 @@
-#
-# A listener registered to receive messages which was sent from the app through SimpleUDPClient.
-# The message will include strings with python code including instructions for the arm - using SwiftAPI and generated
-# on the Blockly environment. messages will always end with "xxx" string, indicating that the whole message successfully
-# transferred.
-#
+"""
+A listener registered to receive messages which was sent from the app through SimpleUDPClient.
+The message will include strings with python code including instructions for the arm - using SwiftAPI and generated
+on the Blockly environment. messages will always end with "xxx" string, indicating that the whole message successfully
+transferred.
+"""
+
 
 import argparse
 import traceback
 import sys
-sys.path.append('pyuf/')
 from pythonosc import dispatcher
 from pythonosc import osc_server
 
 
+sys.path.append('pyuf/')
 ADDRESS = "/Instructions"
 message = ""
 swift = None
