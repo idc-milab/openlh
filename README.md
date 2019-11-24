@@ -1,9 +1,9 @@
 # OpenLH: Open Liquid-Handling System
-The OpenLH is a Liquid handling robot based on an open source robotic arm (uArm Swift Pro) and allows creative exploration.
+The OpenLH is a Liquid handling system based on an available robotic arm platform (uARM swift Pro) which allows for creative exploration by biologists and bio-enthusiasts.
  
-[Here](https://www.instructables.com/id/OpenLH/) you can find full and detailed step-by-step guide for building it, including BOM, stl models and precise instructions.
-The uArm runs on top of an Arduino Mega 2560 with a custom version of Marlin firmware (available under GPL licence). The
-robot operates using G-code definitions sent through UART protocol.
+You can find full and detailed step-by-step guide for building one on our [Instructables page](https://www.instructables.com/id/OpenLH/), including BOM, STL models and precise instructions.
+Find more about including publicationds on the project's [website](http://milab.idc.ac.il/teaching/projects/openlh/). 
+Share with us if you're building one!
 
 ## Getting Started
 
@@ -48,6 +48,9 @@ Than, in your web browser enter: http://127.0.0.1:5000/.
 Now you can easily create programs for the arm via the blockly interface and run them with the OpenLH!
  
 ## Project Structure
+The uArm runs on top of an Arduino Mega 2560 with a custom version of Marlin firmware (available under GPL licence). The
+robot operates using G-code definitions sent through UART protocol.
+
 * ``app.py``
 	* Main app module. Dealing with all the different app routes (receiving XML HttpRequests from index.html)
 * ``listener.py``
