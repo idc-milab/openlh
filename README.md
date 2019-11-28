@@ -23,7 +23,7 @@ First, we will create virtual environment for this project (For more information
 2. Click the :gear: icon and choose Add
 3. In Add Python Interpreter window, select Virtualenv Environment:
    * Specify the location of the new virtual environment in the text field, or click  Virtual environment location and find location in     your file system. Note that the directory where the new virtual environment should be located, must be empty!
-   * Choose the base interpreter from the drop-down list, or click Choose the base interpreter and find the base interpreter in the your file system.
+   * Choose the base interpreter from the drop-down list, or click Choose the base interpreter and find the base interpreter in your file system.
    * Select the Make available to all projects check-box, if needed.
  4. Click Ok  
  
@@ -44,17 +44,29 @@ After setting up the virtual environment, use pip to install the required packag
 
 ### Running for the first time
 After setting it all up, run both ``app.py`` and ``listener.py`` modules.
-Than, in your web browser enter: http://127.0.0.1:5000/.
+Then, in your web browser enter: http://127.0.0.1:5000/.
 Now you can easily create programs for the arm via the blockly interface and run them with the OpenLH!
- 
+
+## Main features
+
+* **Move Wrist:** Rotate arm's wrist with the required angle. Useful to drop used tips from the arm to a disposal area.
+
+* **Move To:** Move the arm to a specific location. To use it, just generate a new Move-to block (from 'Robot' section) as well as the relevant coordinates block (from 'Robot' section). In the coordinates block, `X Y Z` stands for the coordinates, `E` for extrusion level and `S` for movement speed.
+
+* **Bitmap to Bioprint:** An interface that would load a png bitmap, select all the pixels of a single color, and
+print these pixels with the OpenLH. To use it, just generate a new image block (from 'Image' section) as well as the relevant coordinates blocks (from 'Robot' section).
+
 ## Project Structure
-The uArm runs on top of an Arduino Mega 2560 with a custom version of Marlin firmware (available under GPL licence). The
+The uArm runs on top of an Arduino Mega 2560 with a custom version of Marlin firmware (available under GPL license). The
 robot operates using G-code definitions sent through UART protocol.
+
+### Overview
+The code flows throughout the project in the following way: The user may generate different programs manipulating the arm using google's Blockly interface. The generated program is then compiled to python code, using the Swift API (which compiles to G-code commands), and sent as an XML Http Request to app.py. The message is then being sent as a UDP message to the listener. Eventually, the listener is executing the code which activates the arm. In addition, it is possible to save programs for later use and upload images for the ``Bitmap to Bioprint`` feature.
 
 * ``app.py``
 	* Main app module. Dealing with all the different app routes (receiving XML HttpRequests from index.html)
 * ``listener.py``
-	* This is the listener of the project. registered to receive messages which was sent from the app.py through SimpleUDPClient.
+	* This is the listener of the project. Registered to receive messages which was sent from the app.py through SimpleUDPClient.
     * The message will include strings with python code including instructions for the arm - using SwiftAPI and generated on the Blockly environment.
     * messages will always end with "xxx" string, indicating that the whole message successfully transferred.
 * ``coordsplotter.py``
@@ -72,4 +84,4 @@ robot operates using G-code definitions sent through UART protocol.
     * different templates of visual representations for images (before printing)
 * ```/uploads```
 	* .png files uploaded.
-	* .coords files represneting the image coordinates.
+	* .coords files representing the image coordinates.
