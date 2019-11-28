@@ -51,12 +51,14 @@ Now you can easily create programs for the arm via the blockly interface and run
 
 ## Main features
 
-* **Move To:** Move the arm to a specific location. To use it, just generate a new Move-to block (from 'Robot' section) as well as the relevant coordinates block (from 'Robot' section). In the coordinates block, `X Y Z` stands for the coordinates, `E` for extrusion level and `S` for movement speed.
+* **Move To:** Move the arm to a specific location. To use it, just generate a new `Move to` block (from 'Robot' section) as well as the relevant `coordinates` block (from 'Robot' section). In the coordinates block, `X Y Z` stands for the coordinates, `E` for extrusion level and `S` for movement speed.
 
 * **Move Wrist:** Rotate arm's wrist with the required angle. Useful to drop used tips from the arm to a disposal area.
 
 * **Bitmap to Bioprint:** An interface that would load a png bitmap, select all the pixels of a single color, and
-print these pixels with the OpenLH. To use it, just generate a new image block (from 'Image' section) as well as the relevant coordinates blocks (from 'Robot' section).
+print these pixels with the OpenLH. To use it, just generate a new `Image` block (from 'Image' section) as well as the relevant `coordinates` blocks (from 'Robot' section).
+
+* **Manual Position:** Puts the arm in disjoint mode, allowing the user to move it around manualy and sample coordinates. After reaching a desired location, a tip to pick up for example, hit `set` button to generate the location's coordinates as a new useable block. 
 
 ## Project Structure
 The uArm runs on top of an Arduino Mega 2560 with a custom version of Marlin firmware (available under GPL license). The
