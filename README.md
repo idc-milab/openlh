@@ -5,6 +5,8 @@ You can find full and detailed step-by-step guide for building one on our [Instr
 Find more about including publicationds on the project's [website](http://milab.idc.ac.il/teaching/projects/openlh/). 
 Share with us if you're building one!
 
+![software](https://i.ibb.co/9nnLGDX/OpenLH.png)
+
 ## Getting Started
 
 Before you continue reading, make sure you have:
@@ -49,9 +51,9 @@ Now you can easily create programs for the arm via the blockly interface and run
 
 ## Main features
 
-* **Move Wrist:** Rotate arm's wrist with the required angle. Useful to drop used tips from the arm to a disposal area.
-
 * **Move To:** Move the arm to a specific location. To use it, just generate a new Move-to block (from 'Robot' section) as well as the relevant coordinates block (from 'Robot' section). In the coordinates block, `X Y Z` stands for the coordinates, `E` for extrusion level and `S` for movement speed.
+
+* **Move Wrist:** Rotate arm's wrist with the required angle. Useful to drop used tips from the arm to a disposal area.
 
 * **Bitmap to Bioprint:** An interface that would load a png bitmap, select all the pixels of a single color, and
 print these pixels with the OpenLH. To use it, just generate a new image block (from 'Image' section) as well as the relevant coordinates blocks (from 'Robot' section).
