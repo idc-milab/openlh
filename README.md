@@ -5,7 +5,7 @@ You can find full and detailed step-by-step guide for building one on our [Instr
 Find more about including publicationds on the project's [website](http://milab.idc.ac.il/teaching/projects/openlh/). 
 Share with us if you're building one!
 
-![software](https://i.ibb.co/9nnLGDX/OpenLH.png)
+![OpenLH](http://milab.idc.ac.il/wp-content/uploads/2018/03/DSC_0830.jpg)
 
 ## Getting Started
 
@@ -50,6 +50,8 @@ Then, in your web browser enter: http://127.0.0.1:5000/.
 Now you can easily create programs for the arm via the blockly interface and run them with the OpenLH!
 
 ## Main features
+
+![software](https://i.ibb.co/9nnLGDX/OpenLH.png)
 
 * **Move To:** Move the arm to a specific location. To use it, just generate a new `Move to` block (from 'Robot' section) as well as the relevant `coordinates` block (from 'Robot' section). In the coordinates block, `X Y Z` stands for the coordinates, `E` for extrusion level and `S` for movement speed.
 
