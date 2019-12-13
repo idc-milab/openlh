@@ -44,7 +44,7 @@
   "dependencies": {
     "google-closure-library": "^20180204.0.0",
     "install": "^0.8.8",
-    "npm": "^4.4.4",
+    "npm": "^6.13.4",
     "webdriverio": "^4.6.2"
   }
 }
