@@ -341,10 +341,10 @@ Blockly.Trashcan.prototype.click = function() {
     return;
   }
   console.log('TODO: Inspect trash.');
-  // let demoWorkspace = Blockly.inject('blocklyDiv',
-  //       {media: '../../media/',
-  //        toolbox: document.getElementById('toolbox')});
-  //   Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
-  //                              demoWorkspace);
-  //   demoWorkspace.clear();
+  let demoWorkspace = Blockly.inject('blocklyDiv',
+        {media: '../../media/',
+         toolbox: document.getElementById('toolbox')});
+    Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
+                               demoWorkspace);
+    demoWorkspace.clear();
 };

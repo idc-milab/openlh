@@ -2,13 +2,13 @@
 Main app module. Dealing with all the different app routes (receiving XML HttpRequests from index.html)
 """
 
-
 import os
+from time import sleep
 from flask import *
 from os import listdir
 from os.path import isfile, join
 from pythonosc.udp_client import SimpleUDPClient
-
+import serial.tools.list_ports
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.path.basename('uploads')
@@ -105,6 +105,21 @@ def delete_xml():
     file_name = construct_program_name(name)
     os.remove(file_name)  # removes the xml file
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/is_arm_connected', methods=['GET'])
+def is_arm_connected():
+    """
+    check if the swift arm is connecting
+    :return: 1 if the arm is connecting properly or 0 if there's an error
+    """
+    ans = 0
+    ports = list(serial.tools.list_ports.comports())
+    for p in ports:
+        if "Arduino Mega 2560" in str(p):
+            ans = 1
+    result = json.dumps({'connected': ans})
+    return result, 200, {'ContentType': 'application/json'}
 
 
 @app.route('/get_position', methods=['GET'])
