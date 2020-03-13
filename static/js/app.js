@@ -42,6 +42,42 @@ Blockly.defineBlocksWithJsonArray(
         //   "helpUrl": ""
         // },
         {
+            "type": "robot_position_new",
+            "message0": "X %1 Y %2 Z %3 E %4 S %5",
+            "args0": [
+                {
+                    "type": "field_number",
+                    "name": "X",
+                    "check": "Number"
+                },
+                {
+                    "type": "field_number",
+                    "name": "Y",
+                    "check": "Number"
+                },
+                {
+                    "type": "field_number",
+                    "name": "Z",
+                    "check": "Number"
+                },
+                {
+                    "type": "input_value",
+                    "name": "E",
+                    "check": "Number"
+                },
+                {
+                    "type": "input_value",
+                    "name": "S",
+                    "check": "Number"
+                }
+            ],
+            "inputsInline": true,
+            "output": "robot_position",
+            "colour": 260,
+            "tooltip": "",
+            "helpUrl": ""
+        },
+        {
             "type": "robot_position",
             "message0": "X %1 Y %2 Z %3 E %4 S %5",
             "args0": [
@@ -72,50 +108,8 @@ Blockly.defineBlocksWithJsonArray(
                 }
             ],
             "inputsInline": true,
-            "output": null,
+            "output": "robot_position",
             "colour": 260,
-            "tooltip": "",
-            "helpUrl": ""
-        },
-        {
-            "type": "robot_position_with_custom_position",
-            "message0": "Position %1 E %2 S %3",
-            "args0": [
-                {
-                    "type": "input_value",
-                    "name": "Position",
-                    "check": ["robot_position", "robot_position_location_only"]
-                },
-                {
-                    "type": "input_value",
-                    "name": "E",
-                    "check": "Number"
-                },
-                {
-                    "type": "input_value",
-                    "name": "S",
-                    "check": "Number"
-                }
-            ],
-            "inputsInline": true,
-            "output": null,
-            "colour": 300,
-            "tooltip": "",
-            "helpUrl": ""
-        },
-        {
-            "type": "robot_move",
-            "message0": "Move to: %1",
-            "args0": [
-                {
-                    "type": "input_value",
-                    "name": "position",
-                    "check": ["robot_position", "robot_position_location_only"]
-                }
-            ],
-            "previousStatement": null,
-            "nextStatement": null,
-            "colour": 230,
             "tooltip": "",
             "helpUrl": ""
         },
@@ -124,46 +118,107 @@ Blockly.defineBlocksWithJsonArray(
             "message0": "X %1 Y %2 Z %3",
             "args0": [
                 {
-                    "type": "input_value",
+                    "type": "field_number",
                     "name": "X",
                     "check": "Number"
                 },
                 {
-                    "type": "input_value",
+                    "type": "field_number",
                     "name": "Y",
                     "check": "Number"
                 },
                 {
-                    "type": "input_value",
+                    "type": "field_number",
                     "name": "Z",
                     "check": "Number"
                 }
             ],
             "inputsInline": true,
-            "output": null,
-            "colour": 285,
+            "output": "robot_position",
+            "colour": 260,
             "tooltip": "",
-            "helpUrl": ""
         },
         {
             "type": "robot_move",
-            "message0": "Move to: %1",
+            "message0": "move to %1",
             "args0": [
                 {
                     "type": "input_value",
                     "name": "position",
-                    "check": ["robot_position", "robot_position_location_only"]
+                    "check": "robot_position"
                 }
             ],
             "previousStatement": null,
             "nextStatement": null,
-            "colour": 230,
+            "colour": 245,
             "tooltip": "",
             "helpUrl": ""
         },
         {
+            "type": "pick_pipette",
+            "message0": "pipette pick %1",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "position",
+                    "check": "robot_position"
+                },
+            ],
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 245,
+            "tooltip": "",
+            "helpUrl": ""
+        },
+        {
+            "type": "drop_pipette",
+            "message0": "pipette drop %1",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "position",
+                    "check": "robot_position"
+                },
+            ],
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 245,
+            "tooltip": "",
+            "helpUrl": ""
+        },
+        {
+            "type": "load_Material",
+            "message0": "%1 amount %2 position %3",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "action",
+                    "options": [
+                        ["load", "LOAD"],
+                        ["eject", "EJECT"]
+                    ]
+                },
+                {
+                    "type": "field_number",
+                    "name": "amount",
+                    "check": "Number"
+                },
+                {
+                    "type": "input_value",
+                    "name": "position",
+                    "check": "robot_position"
+                },
+
+            ],
+            "inputsInline": true,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": 245,
+            "tooltip": "",
+        },
+        {
             "type": "robot_wrist",
-            "message0": "Move wrist: %1 %2",
+            "message0": "move wrist %1 %2",
             "args0": [
                 {
                     "type": "input_dummy"
@@ -177,13 +232,13 @@ Blockly.defineBlocksWithJsonArray(
             "inputsInline": true,
             "previousStatement": null,
             "nextStatement": null,
-            "colour": 230,
+            "colour": 200,
             "tooltip": "",
             "helpUrl": ""
         },
         {
             "type": "robot_sleep",
-            "message0": "Sleep: %1",
+            "message0": "sleep %1",
             "args0": [
                 {
                     "type": "field_number",
@@ -210,39 +265,43 @@ Blockly.defineBlocksWithJsonArray(
                 {
                     "type": "input_value",
                     "name": "starting_point",
-                    "check": ["robot_position", "robot_position_location_only"]
+                    "check": "robot_position"
                 },
                 {
                     "type": "input_value",
                     "name": "pipette_pick",
-                    "check": ["robot_position", "robot_position_location_only"]
+                    "check": "robot_position"
                 },
                 {
                     "type": "input_value",
                     "name": "liquid_point",
-                    "check": ["robot_position", "robot_position_location_only"]
+                    "check": "robot_position"
                 },
                 {
                     "type": "input_value",
                     "name": "disposal_point",
-                    "check": ["robot_position", "robot_position_location_only"]
+                    "check": "robot_position"
                 }
             ],
             "inputsInline": false,
             "previousStatement": null,
             "nextStatement": null,
-            "colour": 30,
+            "colour": "#A6745C",
             "tooltip": "",
             "helpUrl": ""
         },
         {
             "type": "robot_pump",
-            "message0": "Pump On: %1",
+            "message0": "pump %1",
             "args0": [
                 {
-                    "type": "input_value",
-                    "name": "pump_state"
-                }
+                    "type": "field_dropdown",
+                    "name": "pump_state",
+                    "options": [
+                        ["on", "True"],
+                        ["off", "False"]
+                    ]
+                },
             ],
             "inputsInline": true,
             "previousStatement": null,
@@ -250,7 +309,107 @@ Blockly.defineBlocksWithJsonArray(
             "colour": 200,
             "tooltip": "",
             "helpUrl": ""
-        }
+        },
+        {
+            "type": "shaker_module",
+            "message0": "Shake 👋 %1 duration: %2 %3 speed: %4",
+            "args0": [
+                {
+                    "type": "input_dummy",
+                },
+                {
+                    "type": "field_number",
+                    "name": "duration",
+                    "check": ["Number"]
+                },
+                {
+                    "type": "input_dummy",
+                },
+                {
+                    "type": "field_number",
+                    "name": "speed",
+                    "check": ["Number"]
+                },
+            ],
+            "inputsInline": false,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": "#808080",
+            "tooltip": "",
+            "helpUrl": ""
+        },
+        {
+            "type": "heater_module",
+            "message0": "Heat 🌡️ %1 duration: %2 %3 °C: %4",
+            "args0": [
+                {
+                    "type": "input_dummy",
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "pump_state",
+                    "options": [
+                        ["on", "True"],
+                        ["off", "False"]
+                    ]
+                },
+                {
+                    "type": "input_dummy",
+                },
+                {
+                    "type": "field_number",
+                    "name": "speed",
+                    "check": ["Number"]
+                },
+            ],
+            "inputsInline": false,
+            "previousStatement": null,
+            "nextStatement": null,
+            "colour": "#808080",
+            "tooltip": "",
+            "helpUrl": ""
+        },
+        // {
+        //     "type": "materials",
+        //     "message0": "%1 position: %4 %2 position: %5 %3 position: %6",
+        //     "args0": [
+        //         {
+        //             "type": "field_input",
+        //             "name": "MATERIAL1",
+        //             "text": "Material 1",
+        //         },
+        //         {
+        //             "type": "field_input",
+        //             "name": "MATERIAL2",
+        //             "text": "Material 2",
+        //         },
+        //         {
+        //             "type": "field_input",
+        //             "name": "MATERIAL3",
+        //             "text": "Material 3",
+        //         },
+        //         {
+        //             "type": "input_value",
+        //             "name": "position",
+        //             "check": ["robot_position", "robot_position_location_only"]
+        //         },
+        //         {
+        //             "type": "input_value",
+        //             "name": "position",
+        //             "check": ["robot_position", "robot_position_location_only"]
+        //         },
+        //         {
+        //             "type": "input_value",
+        //             "name": "position",
+        //             "check": ["robot_position", "robot_position_location_only"]
+        //         },
+        //     ],
+        //     "inputsInline": false,
+        //     "output": null,
+        //     "colour": 330,
+        //     "tooltip": "",
+        //     "helpUrl": ""
+        // },
     ]
 );  // END JSON EXTRACT (Do not delete this comment.)
 
@@ -278,6 +437,45 @@ Blockly.Python['robot_position'] = function (block) {
     var value_x = Blockly.Python.valueToCode(block, 'X', Blockly.Python.ORDER_ATOMIC);
     var value_y = Blockly.Python.valueToCode(block, 'Y', Blockly.Python.ORDER_ATOMIC);
     var value_z = Blockly.Python.valueToCode(block, 'Z', Blockly.Python.ORDER_ATOMIC);
+
+    // dealing with negative numbers
+    if (parseFloat(value_x) < 0)
+        value_x = "(" + value_x + ")";
+    if (parseFloat(value_y) < 0)
+        value_y = "(" + value_y + ")";
+    if (parseFloat(value_x) < 0)
+        value_z = "(" + value_x + ")";
+
+
+    var value_e = Blockly.Python.valueToCode(block, 'E', Blockly.Python.ORDER_ATOMIC);
+    var value_s = Blockly.Python.valueToCode(block, 'S', Blockly.Python.ORDER_ATOMIC);
+
+    // generate python code
+    var code = "{";
+    code += "\'x\':" + valueOrNone(value_x) + ", ";
+    code += "\'y\':" + valueOrNone(value_y) + ", ";
+    code += "\'z\':" + valueOrNone(value_z) + ", ";
+    code += "\'e\':" + valueOrNone(value_e) + ", ";
+    code += "\'speed\':" + valueOrNone(value_s);
+    code += '}';
+
+    return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['robot_position_new'] = function (block) {
+    var value_x = block.getFieldValue('X');
+    var value_y = block.getFieldValue('Y');
+    var value_z = block.getFieldValue('Z');
+
+    // dealing with negative numbers
+    if (parseFloat(value_x) < 0)
+        value_x = "(" + value_x + ")";
+    if (parseFloat(value_y) < 0)
+        value_y = "(" + value_y + ")";
+    if (parseFloat(value_x) < 0)
+        value_z = "(" + value_x + ")";
+
+
     var value_e = Blockly.Python.valueToCode(block, 'E', Blockly.Python.ORDER_ATOMIC);
     var value_s = Blockly.Python.valueToCode(block, 'S', Blockly.Python.ORDER_ATOMIC);
 
@@ -294,49 +492,141 @@ Blockly.Python['robot_position'] = function (block) {
 };
 
 Blockly.Python['robot_position_location_only'] = function (block) {
-    var value_x = Blockly.Python.valueToCode(block, 'X', Blockly.Python.ORDER_ATOMIC);
-    var value_y = Blockly.Python.valueToCode(block, 'Y', Blockly.Python.ORDER_ATOMIC);
-    var value_z = Blockly.Python.valueToCode(block, 'Z', Blockly.Python.ORDER_ATOMIC);
-    
+    var value_x = block.getFieldValue('X');
+    var value_y = block.getFieldValue('Y');
+    var value_z = block.getFieldValue('Z');
+
+    // dealing with negative numbers
+    if (parseFloat(value_x) < 0)
+        value_x = "(" + value_x + ")";
+    if (parseFloat(value_y) < 0)
+        value_y = "(" + value_y + ")";
+    if (parseFloat(value_x) < 0)
+        value_z = "(" + value_x + ")";
+
     // generate python code
     var code = "{";
     code += "\'x\':" + valueOrNone(value_x) + ", ";
     code += "\'y\':" + valueOrNone(value_y) + ", ";
-    code += "\'z\':" + valueOrNone(value_z);
-    code += '}';
-    
-    return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['robot_position_with_custom_position'] = function (block) {
-    let value_position = Blockly.Python.valueToCode(block, 'Position', Blockly.Python.ORDER_ATOMIC);
-    let value_e = Blockly.Python.valueToCode(block, 'E', Blockly.Python.ORDER_ATOMIC);
-    let value_s = Blockly.Python.valueToCode(block, 'S', Blockly.Python.ORDER_ATOMIC);
-
-    // regex to extract X Y Z coords
-    let re = /'x':(.*), 'y':(.*), 'z':(.*)}/;
-    value_position.replace(re, '');
-
-    // generate python code
-    let code = "{";
-    code += "\'x\':" + valueOrNone(RegExp.$1) + ", ";
-    code += "\'y\':" + valueOrNone(RegExp.$2) + ", ";
-    code += "\'z\':" + valueOrNone(RegExp.$3) + ", ";
-    code += "\'e\':" + valueOrNone(value_e) + ", ";
-    code += "\'speed\':" + valueOrNone(value_s);
+    code += "\'z\':" + valueOrNone(value_z) + ", ";
+    code += "\'e\':None, ";
+    code += "\'speed\':None";
     code += '}';
 
     return [code, Blockly.Python.ORDER_NONE];
 };
+
 
 Blockly.Python['robot_move'] = function (block) {
-    var value_position = Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC);
+    var value_position = String(Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC));
+    
+    // delete unnecessary '(' ')' characters
+    if (value_position.startsWith("(") && value_position.endsWith(")")) 
+        value_position = value_position.substring(1, value_position.length - 1);
     console.log(value_position);
 
     // generate python code
     var code = "dict_args = " + value_position + " \n";
     code += "dict_args[\'wait\'] = True \n";
     code += "swift.set_position(**dict_args)\n";
+    return code;
+};
+
+Blockly.Python['pick_pipette'] = function (block) {
+    var value_position = String(Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC));
+    
+    // delete unnecessary '(' ')' characters
+    if (value_position.startsWith("(") && value_position.endsWith(")"))
+        value_position = String(value_position).substring(1, value_position.length - 1);
+
+    // generate python code
+
+    // Hovering above pipette
+    var code = "dict_args = " + value_position + " \n";  
+    code += "dict_args[\'wait\'] = True \n";
+    code += "dict_args[\'change_z_by\'] = 50 \n"; 
+    code += "swift.set_position(**dict_args)\n";
+
+    // Acquiring pipette
+    code += "dict_args[\'wait\'] = True \n";
+    code += "dict_args[\'change_z_by\'] = 0 \n";
+    code += "swift.set_position(**dict_args)\n";
+
+    // Hovering above pipette
+    code += "dict_args[\'wait\'] = True \n";
+    code += "dict_args[\'change_z_by\'] = 50 \n"; 
+    code += "swift.set_position(**dict_args)\n";
+    code += "dict_args[\'change_z_by\'] = 0 \n"; // back to normal location (relevant in case of using variables)
+
+    return code;
+};
+
+// Blockly.Python['drop_pipette'] = function (block) {
+//     var value_position = Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC);
+
+//     // generate python code
+//     var code = "dict_args = " + value_position + " \n";  // go to drop position
+//     code += "dict_args[\'wait\'] = True \n";
+//     code += "swift.set_position(**dict_args)\n";
+
+//     swift.set_wrist(90)  // drop the pipette
+//     sleep(1)
+
+//     return code;
+// }
+
+Blockly.Python['load_Material'] = function (block) {
+    var value_position = String(Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC));
+    // delete unnecessary '(' ')' characters
+    if (value_position.startsWith("(") && value_position.endsWith(")"))
+        value_position = value_position.substring(1, value_position.length - 1);
+    var value_amount = block.getFieldValue('amount');
+    var action = block.getFieldValue('action');
+    // var patt = /{'x':(.*), 'y':(.*), 'z':[\(]?(.*)[\)]?(.*)}/i;
+    // var match = patt.exec(value_position);
+    // var value_position_up;
+    // if (valueOrNone(match[3]) != 'None')  // there is a Z coordinate
+    //     value_position_up = "{'x':" + match[1] + ", 'y':" + match[2] + ", 'z':" + (parseFloat(match[3]) + 50) + "}";
+    // else
+    //     value_position_up = value_position;
+
+    // generate python code
+    if (action == "LOAD") {
+        // Load option
+
+        // Hovering above pipette
+        var code = "dict_args = " + value_position + " \n";
+        code += "dict_args[\'change_z_by\'] = 70 \n"; 
+        code += "dict_args[\'wait\'] = True \n";
+        code += "swift.set_position(**dict_args)\n";
+
+        // back to normal location (relevant in case of using variables)
+        code += "dict_args[\'change_z_by\'] = 0 \n"; 
+        code += "swift.set_position(**dict_args)\n";
+
+        // loading material
+        code += "dict_args = ({'e': " + value_amount + "}) \n";  
+        code += "dict_args[\'wait\'] = True \n";
+        code += "swift.set_position(**dict_args)\n";
+
+        // Hovering above pipette
+        code += "dict_args = " + value_position + " \n";
+        code += "dict_args[\'change_z_by\'] = 70 \n"; 
+        code += "dict_args[\'wait\'] = True \n";
+        code += "swift.set_position(**dict_args)\n";
+        code += "dict_args[\'change_z_by\'] = 0 \n"; // back to normal location (relevant in case of using variables)
+    }
+    else {
+        // Eject option
+        var code = "dict_args = " + value_position + " \n";  // Reaching ejecting position
+        code += "dict_args[\'wait\'] = True \n";
+        code += "swift.set_position(**dict_args)\n";
+
+        code += "dict_args = ({'e': " + value_amount + "}) \n";  // ejecting material
+        code += "dict_args[\'wait\'] = True \n";
+        code += "swift.set_position(**dict_args)\n";
+    }
+
     return code;
 };
 
@@ -349,6 +639,12 @@ Blockly.Python['robot_wrist'] = function (block) {
 Blockly.Python['robot_sleep'] = function (block) {
     var dur = block.getFieldValue('duration');
     var code = 'sleep(' + dur + ')\n';
+    return code;
+};
+
+Blockly.Python['shaker_module'] = function (block) {
+    var dur = block.getFieldValue('duration');
+    var code = 'swift.shaker_module_init(time=' + dur + ')\n';
     return code;
 };
 
@@ -458,7 +754,7 @@ Blockly.Python['print_image'] = function (block) {
 };
 
 Blockly.Python['robot_pump'] = function (block) {
-    var state = Blockly.Python.valueToCode(block, 'pump_state', Blockly.Python.ORDER_ATOMIC);
+    var state = block.getFieldValue('pump_state');
     var code = 'swift.set_pump(on=' + state + ')\n';
     return code;
 };

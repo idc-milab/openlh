@@ -78,6 +78,7 @@
                 <!--            <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>-->
                 <a class="nav-item nav-link" href="" data-toggle="modal" data-target="#About">About</a>
                 <a class="nav-item nav-link" href="https://www.instructables.com/id/OpenLH/">Instructables Page</a>
+                <a class="nav-item nav-link" href="https://github.com/idc-milab/openlh">GitHub</a>
                 <a class="nav-item nav-link"
                     href="http://milab.idc.ac.il/wp-content/uploads/2019/01/OpenLH.pdf">Publication</a>
             </div>
@@ -141,17 +142,17 @@
         </button>
         <button class="btn btn-success" onclick="runCode()" id="RunJavaScript" style="margin:3px;">Run JavaScript
         </button>
-        <button class="btn btn-success" onclick="sendCode()" id="Play" style="margin:3px;">
+        <button class="btn btn-success" onclick="runWorkspaceCode()" id="Play" style="margin:3px;">
             Run with OpenLH
         </button>
 
         <div class="btn-group" role="group" aria-label="Basic example">
             <button class="btn btn-secondary" onclick="savePosition()" id="SavePosition" style="margin-left:5px">Manual
-                Position
+                Sampling
             </button>
-            <button class="btn btn-secondary" onclick="addPositionBlock()" id="Add" disabled="true">Set
+            <button class="btn btn-secondary" onclick="addPositionBlock()" disabled="true" id="Add">Add Block
             </button>
-            <button class="btn btn-secondary" onclick="stopSavePosition()" id="Stop" disabled="true">Lock
+            <button class="btn btn-secondary" onclick="stopSavePosition()" disabled="true" id="Stop">Finish
             </button>
         </div>
 
@@ -167,6 +168,13 @@
             class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" data-toggle="modal"
             data-target="#saveProgramModal" style="margin-left:6px;" title="Save Program">
             <i class="fa fa-save"></i>
+        </button>
+
+        <!-- Button to clear the workspace -->
+        <button type="button" id="cleanWorkspaceButton"
+            class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="margin-left:6px;"
+            title="Clear Workspace" ; onclick="cleanWorkspace()">
+            <i class="fa fa-trash"></i>
         </button>
 
 
@@ -231,15 +239,19 @@
     </div>
 
     <!-- Blockly -->
-    <div id="blocklyDiv" style="height: 800px; width: 1200px; margin-top: 20px; margin-left: 8px"></div>
+    <div id="blocklyDiv"
+        style="box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3); height: 800px; width: 95%; margin-top: 20px; margin-bottom: 35px; margin-left: 2%">
+    </div>
 
     <!-- Tabs - saved programs and uploaded images -->
     <div id="tabs">
 
         <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
             <div class="mdl-tabs__tab-bar">
-                <a href="#programs-panel" class="mdl-tabs__tab is-active">Saved Programs</a>
-                <a href="#images-panel" class="mdl-tabs__tab">Uploaded Images</a>
+                <a href="#programs-panel" class="mdl-tabs__tab is-active"
+                    style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Saved Programs</a>
+                <a href="#images-panel" class="mdl-tabs__tab"
+                    style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Uploaded Images</a>
             </div>
 
             <div class="mdl-tabs__panel is-active" id="programs-panel">
@@ -257,18 +269,28 @@
 
     <!-- XMLs -->
     <xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
-        <category name="Image" colour="#ffdf6d">
-            <block type="print_image"></block>
-        </category>
-        <category name="Robot" colour="#8a868c">
+        <category name="Robot" colour=250>
             <block type="robot_move"></block>
-            <block type="robot_position"></block>
+            <block type="pick_pipette"></block>
+            <!-- <block type="drop_pipette"></block> -->
+            <block type="load_Material"></block>
+            <block type="robot_position_new"></block>
             <block type="robot_position_location_only"></block>
-            <block type="robot_position_with_custom_position"></block>
+            <!-- <block type="robot_position"></block> -->
+            <!-- <block type="robot_position_with_custom_position"></block> -->
             <block type="robot_sleep"></block>
             <block type="robot_wrist"></block>
             <block type="robot_pump"></block>
         </category>
+        <category name="Modules" colour="#808080">
+            <block type="shaker_module"></block>
+            <block type="heater_module"></block>
+            <!-- <block type="materials"></block> -->
+        </category>
+        <category name="Image" colour="#A6745C">
+            <block type="print_image"></block>
+        </category>
+        <sep></sep>
         <category name="Logic" colour="#5C81A6">
             <block type="controls_if"></block>
             <block type="logic_compare">
@@ -582,7 +604,7 @@
                 <field name="DIRECTION">1</field>
             </block>
         </category>
-        <category name="Colour" colour="#A6745C">
+        <!-- <category name="Colour" colour="#A6745C">
             <block type="colour_picker">
                 <field name="COLOUR">#ff0000</field>
             </block>
@@ -621,66 +643,29 @@
                     </shadow>
                 </value>
             </block>
-        </category>
+        </category> -->
         <sep></sep>
         <category name="Variables" colour="#A65C81" custom="VARIABLE"></category>
         <category name="Functions" colour="#9A5CA6" custom="PROCEDURE"></category>
     </xml>
 
     <xml id="startBlocks" style="display: none">
-        <block type="controls_if" inline="false" x="20" y="20">
-            <mutation else="1"></mutation>
-            <value name="IF0">
-                <block type="logic_compare" inline="true">
-                    <field name="OP">EQ</field>
-                    <value name="A">
-                        <block type="math_arithmetic" inline="true">
-                            <field name="OP">MULTIPLY</field>
-                            <value name="A">
-                                <block type="math_number">
-                                    <field name="NUM">6</field>
-                                </block>
-                            </value>
-                            <value name="B">
-                                <block type="math_number">
-                                    <field name="NUM">7</field>
-                                </block>
-                            </value>
-                        </block>
-                    </value>
-                    <value name="B">
-                        <block type="math_number">
-                            <field name="NUM">42</field>
-                        </block>
-                    </value>
+        <block type="robot_move" id="lQfs928Y2laRna,e}JHL" x="44" y="32">
+            <value name="position">
+                <block type="robot_position_new" id="R#={M)J=Y[Wz|)T=wsck">
+                    <field name="X">0</field>
+                    <field name="Y">0</field>
+                    <field name="Z">0</field>
                 </block>
             </value>
-            <statement name="DO0">
-                <block type="text_print" inline="false">
-                    <value name="TEXT">
-                        <block type="text">
-                            <field name="TEXT">Don't panic</field>
-                        </block>
-                    </value>
-                </block>
-            </statement>
-            <statement name="ELSE">
-                <block type="text_print" inline="false">
-                    <value name="TEXT">
-                        <block type="text">
-                            <field name="TEXT">Panic</field>
-                        </block>
-                    </value>
-                </block>
-            </statement>
         </block>
     </xml>
+
 
     <script>
         // init the Blockly workspace
         let demoWorkspace = Blockly.inject('blocklyDiv',
             {
-                media: '../../media/',
                 toolbox: document.getElementById('toolbox')
             });
 
@@ -791,12 +776,12 @@
             ul.appendChild(li);
         }
 
-        
+
         /**
          * delete a program from the saved programs list.
          * @param   {string}    programName     name of the saved program
          */
-         function deleteProgram(programName) {
+        function deleteProgram(programName) {
             let xhr = new XMLHttpRequest();
             xhr.open('POST', 'delete_xml');
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -825,6 +810,10 @@
             xhr.send(JSON.stringify({ name: imageName }));
         }
 
+        /** cleans the workspace from blocks */
+        function cleanWorkspace() {
+            demoWorkspace.clear();
+        }
 
         /** cleans the saved programs list */
         function cleanProgramList() {
@@ -912,68 +901,77 @@
 
 
         /** 
-         *  puts the arm's motors on disjoint mode, allowing the user to physically maneuver it to differnet locations.
+         *  generates and run python code which puts the arm's motors on disjoint mode, allowing the user to physically maneuverit to differnet locations.
          *  will exit the mode (rejoin arm's motors) while the user is changing getting_position key in the live_position 
          *  JSON file (by clicking 'Stop').
          */
         function savePosition() {
-            // manage buttons disabling
-            document.getElementById("Add").disabled = false;
-            document.getElementById("Stop").disabled = false;
-            document.getElementById("SavePosition").disabled = true;
-            document.getElementById("RunJavaScript").disabled = true;
-            document.getElementById("Play").disabled = true;
-
-            // generate code which disjoints the arm and save it's current location to a JSON file.
-            let code = "\nfrom uf.wrapper.swift_api import SwiftAPI\n" +
-                "from uf.utils.log import *\n" +
-                "from time import *\n" +
-                "getting_position = \"True\"  # will be \"True\" while the user is capturing positions\n" +
-                "logger_init(logging.DEBUG)\n" +
-                "swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}\n" +
-                "sleep(2)\n" +
-                // save the current location to live_position.JSON
-                "def report_position(position):\n" +
-                "    global getting_position\n" +
-                "    file = open(\"live_position.json\", \"r\")\n" +
-                "    data = file.readline()\n" +
-                "    getting_position = data[22:26]\n" +
-                "    if getting_position != \"True\":  # the user pressed the STOP button on index.html\n" +
-                "        return\n" +
-                "    file.close()\n" +
-                "    file = open(\"live_position.json\", \"w\")\n" +
-                "    json_text = \"\\\"getting_position\\\": \\\"{getting_position}\\\", \\\"x\\\": \\\"{x}\\\", \\\"y\\\": \\\"{y}\\\", \\\"z\\\": \\\"{z}\\\"\"\n" +
-                "    json_text = json_text.format(x=position[0], y=position[1], z=position[2], getting_position=getting_position)\n" +
-                "    json_text = \"{\" + json_text + \"}\"\n" +
-                "    file.write(json_text)\n" +
-                "    file.close()\n" +
-                // initialize the JSON file to default values
-                "file = open(\"live_position.json\", \"w\")\n" +
-                "json_text = \"{\\\"getting_position\\\": \\\"True\\\", \\\"x\\\": \\\"0\\\", \\\"y\\\": \\\"0\\\", \\\"z\\\": \\\"0\\\"}\"\n" +
-                "file.write(json_text)\n" +
-                "file.close()\n" +
-                "sleep(2)\n" +
-                // disjoin motors and write the position to the JSON file
-                "swift.send_cmd_sync(\"M2019\")\n" +
-                "swift.register_report_position_callback(report_position)\n" +
-                "swift.set_report_position(1)\n" +
-                "while getting_position == \"True\":\n" +
-                "    pass\n" +
-                // rejoin motors
-                "swift.send_cmd_sync(\"M302 S0\")\n" +
-                "sleep(1)\n" +
-                "swift.close_conn()\n";
-
-            // send the code to the server
-            xhr = new XMLHttpRequest();
-            xhr.open('POST', 'run_code');
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/is_arm_connected');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onload = function () {
                 if (xhr.status !== 200) {
                     alert('Request failed.  Returned status of ' + xhr.status);
                 }
-            };
-            xhr.send(JSON.stringify({ code: code }));
+                else {
+                    let response = JSON.parse(xhr.response);
+                    if (response.connected == "0")  // uarm is not connected
+                    {
+                        alert("UArm is not connected properly");
+                        return;
+                    }
+
+                    // manage buttons disabling
+                    document.getElementById("Add").disabled = false;
+                    document.getElementById("Stop").disabled = false;
+                    document.getElementById("SavePosition").disabled = true;
+                    document.getElementById("RunJavaScript").disabled = true;
+                    document.getElementById("Play").disabled = true;
+
+                    // generate code which disjoints the arm and save it's current location to a JSON file.
+                    let code = "\nfrom uf.wrapper.swift_api import SwiftAPI\n" +
+                        "from uf.utils.log import *\n" +
+                        "from time import *\n" +
+                        "getting_position = \"True\"  # will be \"True\" while the user is capturing positions\n" +
+                        "logger_init(logging.DEBUG)\n" +
+                        "swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}\n" +
+                        "sleep(2)\n" +
+                        // save the current location to live_position.JSON
+                        "def report_position(position):\n" +
+                        "    global getting_position\n" +
+                        "    file = open(\"live_position.json\", \"r\")\n" +
+                        "    data = file.readline()\n" +
+                        "    getting_position = data[22:26]\n" +
+                        "    if getting_position != \"True\":  # the user pressed the STOP button on index.html\n" +
+                        "        return\n" +
+                        "    file.close()\n" +
+                        "    file = open(\"live_position.json\", \"w\")\n" +
+                        "    json_text = \"\\\"getting_position\\\": \\\"{getting_position}\\\", \\\"x\\\": \\\"{x}\\\", \\\"y\\\": \\\"{y}\\\", \\\"z\\\": \\\"{z}\\\"\"\n" +
+                        "    json_text = json_text.format(x=position[0], y=position[1], z=position[2], getting_position=getting_position)\n" +
+                        "    json_text = \"{\" + json_text + \"}\"\n" +
+                        "    file.write(json_text)\n" +
+                        "    file.close()\n" +
+                        // initialize the JSON file to default values
+                        "file = open(\"live_position.json\", \"w\")\n" +
+                        "json_text = \"{\\\"getting_position\\\": \\\"True\\\", \\\"x\\\": \\\"0\\\", \\\"y\\\": \\\"0\\\", \\\"z\\\": \\\"0\\\"}\"\n" +
+                        "file.write(json_text)\n" +
+                        "file.close()\n" +
+                        "sleep(2)\n" +
+                        // disjoin motors and write the position to the JSON file
+                        "swift.send_cmd_sync(\"M2019\")\n" +
+                        "swift.register_report_position_callback(report_position)\n" +
+                        "swift.set_report_position(1)\n" +
+                        "while getting_position == \"True\":\n" +
+                        "    pass\n" +
+                        // rejoin motors
+                        "swift.send_cmd_sync(\"M302 S0\")\n" +
+                        "sleep(1)\n" +
+                        "swift.close_conn()\n";
+                    sendCode(code);
+                }
+            }
+            xhr.send();
         }
 
 
@@ -993,14 +991,8 @@
                     let position = JSON.parse(xhr.response).position;
                     console.log(position);
                     // create the new block with string representing the xml and add it to workspace
-                    let positionBlockXML = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"> \
-                        <variables></variables><block type=\"robot_position\" id=\"SyFPz*@(!ozue1(3%5~`\" x=\"227\" y=\"52\"> \
-                        <value name=\"X\"><block type=\"math_number\" id=\"U41TJc7#mA3P$!VMD:Oy\"><field name=\"NUM\">" + position.x + "} \
-                        </field></block></value><value name=\"Y\"><block type=\"math_number\" id=\"@Xa(Koud`5?ynXVH`Z0|\"> \
-                        <field name=\"NUM\">" + position.y + "</field></block></value> \
-                        <value name=\"Z\"><block type=\"math_number\" id=\"mTi{~3]{.U[-wTtvoaoW\"><field name=\"NUM\">" + position.z + "</field> \
-                        </block></value></block></xml>"
-                    loadXml(positionBlockXML, false); 
+                    let positionBlockXML = '<xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables><block type="robot_position_new" id=":[.^%w}.^urrSE28/$54" x="274" y="57"><field name="X">' + position.x + '</field><field name="Y">' + position.y + '</field><field name="Z">' + position.z + '</field></block></xml>'
+                    loadXml(positionBlockXML, false);
                 }
 
             };
@@ -1050,7 +1042,7 @@
             code += "sleep(2)\n";
             code += 'print("Allowing extrusion")\n';
             // Set the minimum extrusion "temperature" to 0 (so we can use 3d printing features for liquid extrusion)
-            code += 'swift.send_cmd_sync("M302 S0")\n'; 
+            code += 'swift.send_cmd_sync("M302 S0")\n';
             return code;
         }
 
@@ -1067,24 +1059,51 @@
             code += 'swift.close_conn()\n';
             return code;
         }
-        
 
-        /**
+
+        /**       
          * create python code from workspace, add init and final code and send to the server.
          */
-        function sendCode() {
+        function runWorkspaceCode() {
             let code = Blockly.Python.workspaceToCode(demoWorkspace);
-            xhr = new XMLHttpRequest();
             code = getInitCode() + code + getFinalCode();
+            sendCode(code);
+        }
 
-            xhr.open('POST', 'run_code');
+
+        /**       
+         * first checks if the uarm is connected properly to some port. 
+         * then, send the code to the server.
+         * @param   {string}    code     python code (operating the arm) to send to the server
+         */
+        async function sendCode(code) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/is_arm_connected');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onload = function () {
                 if (xhr.status !== 200) {
                     alert('Request failed.  Returned status of ' + xhr.status);
                 }
+                else {
+                    let response = JSON.parse(xhr.response);
+                    if (response.connected == "0")  // uarm is not connected
+                    {
+                        alert("UArm is not connected properly");
+                        return;
+                    }
+
+                    xhr.open('POST', 'run_code');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.onload = function () {
+                        if (xhr.status !== 200) {
+                            alert('Request failed.  Returned status of ' + xhr.status);
+                        }
+                    };
+                    xhr.send(JSON.stringify({ code: code }));
+                }
             };
-            xhr.send(JSON.stringify({ code: code }));
+            xhr.send();
         }
 
 
