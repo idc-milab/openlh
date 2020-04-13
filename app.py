@@ -3,7 +3,8 @@ Main app module. Dealing with all the different app routes (receiving XML HttpRe
 """
 
 import os
-from time import sleep
+import random
+
 from flask import *
 from os import listdir
 from os.path import isfile, join
@@ -31,17 +32,29 @@ def run_code():
     code = request.json['code']
 
     # for debugging purpose
-    print(request.data)
-    print(request.json)
+    # print(request.data)
+    # print(request.json)
     print(code)
 
-    ADDRESS = "/Instructions"
+    address = "/Instructions"
     c = SimpleUDPClient('127.0.0.1', 5001)
 
     # Can only pass up to 9000 characters.
-    c.send_message(ADDRESS, code)
-    c.send_message(ADDRESS, "xxx")
+    c.send_message(address, code)
+    c.send_message(address, "___code___")
 
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/abort', methods=['POST'])
+def abort():
+    """
+    Sends an abort message (make the arm stop running program and return to its init position) to the UDPClient.
+    :return: JSON Indicating success (200)
+    """
+    address = "/Instructions"
+    c = SimpleUDPClient('127.0.0.1', 5001)
+    c.send_message(address, "___kill___")
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
@@ -50,13 +63,74 @@ def upload_file():
     """
     receives an image file, save it on UPLOAD_FOLDER.
     converting to .coords file including coordinates of the png.
-    :return: render index.html template
+    :return: render index.html
     """
     file = request.files['image']
     f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
     file.save(f)
     os.system(os.path.join(app.config['UPLOAD_FOLDER'], 'convert.bat') + ' ' + file.filename)
     os.system('python coordsplotter.py ' + file.filename)
+    return render_template('index.html')
+
+
+@app.route('/ca_generate', methods=['POST'])
+def ca_generate():
+    """
+    receives a cellular automaton rule and initial state mode ('N' for one cell on the first row, 'R' for a random
+    first row). Build the corresponding matrix and convert it to a .coords file including coordinates.
+    :return: render index.html
+    """
+    name = request.form['name']
+    mode = request.form['mode']
+    rule = int(request.form['rule'])
+    row_number = int(request.form['steps'])
+    col_number = 50
+
+    # generate a matrix representing the wanted cellular automaton pattern
+    matrix = [[0 for x in range(col_number)] for y in range(row_number)]
+
+    # fill the first row according to the mode
+    if mode is "N":
+        # normal mode
+        matrix[0][int(col_number / 2)] = 1
+    else:
+        # random mode
+        for i in range(0, col_number):
+            matrix[0][i] = random.randint(0, 1)
+
+    # fill the rest of the matrix rows according to the rule
+    for i in range(1, row_number):
+        for j in range(1, col_number - 1):
+            three_from_row_above = str(matrix[i - 1][j - 1]) + str(matrix[i - 1][j]) + str(matrix[i - 1][j + 1])
+            # convert the rule from integer to a binary list
+            rule_binary = bin(rule)
+            rule_list = []
+            for digit in str(rule_binary)[2:]:
+                rule_list.append(int(digit))
+            for empty_slots in range(8 - len(rule_list)):
+                rule_list.insert(0, 0)
+
+            decode = {
+                '111': rule_list[0],
+                '110': rule_list[1],
+                '101': rule_list[2],
+                '100': rule_list[3],
+                '011': rule_list[4],
+                '010': rule_list[5],
+                '001': rule_list[6],
+                '000': rule_list[7],
+            }
+            matrix[i][j] = decode[three_from_row_above]
+
+    # convert the matrix to .coords file (with coordinates)
+    file_name = "{}-{}-{}.ca".format(name, rule, mode)
+    coordinates_file = open(os.path.join(app.config['UPLOAD_FOLDER'], 'coords', file_name + ".coords"), "x")
+    for i in range(0, row_number):
+        for j in range(0, col_number):
+            if matrix[i][j] == 1:
+                coordinates_file.write("{},{}\n".format(i, j))
+    coordinates_file.close()
+    os.system('python coordsplotter.py ' + file_name)
     return render_template('index.html')
 
 
@@ -68,13 +142,12 @@ def save_xml():
     :return: JSON Indicating success (200)
     """
     # for debugging purpose
-    print(request.data)
-    print(request.json)
+    # print(request.data)
+    # print(request.json)
 
     xml = request.json['xml']
     name = request.json['name']
     file_name = construct_program_name(name)
-    print(file_name + "(^()*&")
     with open(file_name, "w") as file:
         file.write(xml)
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -87,8 +160,7 @@ def delete_image():
     png, coords and html (layout template).
     :return: JSON Indicating success (200)
     """
-    name = request.json['name']
-    print(os.path.join(app.config['UPLOAD_FOLDER'], 'coords', name + '.coords'))
+    name = request.json['name'] + ".png"
     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], name))  # removes the png file
     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'coords', name + '.coords'))  # removes the coords file
     os.remove("templates/" + name + ".html")  # removes the html template file
@@ -107,6 +179,18 @@ def delete_xml():
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
+@app.route('/delete_cellular_automaton_pattern', methods=['POST'])
+def delete_cellular_automaton_pattern():
+    """
+    receives a cellular automaton pattern name to delete, delete the relevant file.
+    :return: JSON Indicating success (200)
+    """
+    name = request.json['name'] + ".ca"
+    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'coords', name + '.coords'))  # removes the coords file
+    os.remove("templates/" + name + ".html")  # removes the html template file
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
 @app.route('/is_arm_connected', methods=['GET'])
 def is_arm_connected():
     """
@@ -116,7 +200,8 @@ def is_arm_connected():
     ans = 0
     ports = list(serial.tools.list_ports.comports())
     for p in ports:
-        if "Arduino Mega 2560" in str(p):
+        print(str(p))
+        if "Arduino Mega 2560" in str(p) or "USB Serial Port‏" in str(p):
             ans = 1
     result = json.dumps({'connected': ans})
     return result, 200, {'ContentType': 'application/json'}
@@ -139,7 +224,7 @@ def get_position():
 @app.route('/get_programs', methods=['GET'])
 def get_list_programs():
     """
-    Get a list with all the program names (for the saved programs tab on index.html)
+    Get a list with all the program names (for the 'saved programs' tab on index.html)
     :return: JSON Indicating success (200)
     """
     programs = get_programs_names()
@@ -150,11 +235,22 @@ def get_list_programs():
 @app.route('/get_images', methods=['GET'])
 def get_list_images():
     """
-    Get a list with all the images names (for the uploaded images tab on index.html)
+    Get a list with all the images names (for the 'uploaded images' tab on index.html)
     :return: JSON Indicating success (200)
     """
     images = get_images_names()
     result = json.dumps({'success': True, 'images': images})
+    return result, 200, {'ContentType': 'application/json'}
+
+
+@app.route('/get_cellular_automaton_patterns', methods=['GET'])
+def get_cellular_automaton_patterns():
+    """
+    Get a list with all the cellular automaton patterns names (for the 'cellular automaton patterns' tab on index.html)
+    :return: JSON Indicating success (200)
+    """
+    patterns = get_cellular_automaton_patterns_names()
+    result = json.dumps({'success': True, 'patterns': patterns})
     return result, 200, {'ContentType': 'application/json'}
 
 
@@ -220,16 +316,20 @@ def get_images_names():
     """
     :return: a list with all the images names on UPLOAD_FOLDER
     """
-    path = os.path.join(app.config['UPLOAD_FOLDER'], "")
-    return [f for f in listdir(path) if f.endswith(".png")]
+    path = os.path.join("templates", "")
+    return [f[:-9] for f in listdir(path) if f.endswith(".png.html")]
+
+
+def get_cellular_automaton_patterns_names():
+    """
+    :return: a list with all the cellular automaton patterns names on UPLOAD_FOLDER
+    """
+    path = os.path.join("templates", "")
+    return [f[:-8] for f in listdir(path) if f.endswith(".ca.html")]
 
 
 def construct_program_name(name):
     return os.path.join(app.config['PROGRAMS_FOLDER'], name + ".xml")
-
-
-def construct_image_name(name):
-    return os.path.join(app.config['UPLOAD_FOLDER'], name + ".png")
 
 
 if __name__ == '__main__':
