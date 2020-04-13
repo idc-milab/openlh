@@ -25,7 +25,6 @@ class Pump():
         ufc.node_init(node, self.ports, iomap)
     
     def set_pump(self, val):
-        print("YUVIIIIIIII")
         if val == 'on':
             self.ports['cmd_sync']['handle'].call('M2231 V1')
         else:

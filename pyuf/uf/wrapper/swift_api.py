@@ -202,7 +202,7 @@ class SwiftAPI():
 
     def set_position(self, x=None, y=None, z=None,
                      speed=None, relative=False,
-                     wait=False, timeout=10, e=None, change_z_by=0):
+                     wait=False, timeout=10, e=None, change_x_by=0, change_y_by=0, change_z_by=0):
         '''
         Move arm to the position (x,y,z) unit is mm, speed unit is mm/sec
         
@@ -230,12 +230,12 @@ class SwiftAPI():
             cmd += ' G0'
 
         if x != None:
-            cmd += ' X{}'.format(x)
+            cmd += ' X{}'.format(x + change_x_by)
         if y != None:
-            cmd += ' Y{}'.format(y)
+            cmd += ' Y{}'.format(y + change_y_by)
         if z != None:
             cmd += ' Z{}'.format(z + change_z_by)
-        if e is not None:
+        if e != None:
             cmd += ' E{}'.format(e)
         if speed != None:
             cmd += ' F{}'.format(speed)
@@ -701,6 +701,24 @@ class SwiftAPI():
 
         cmd += ' M700 S{} P{}'.format(time, speed)
 
+        ret = self._ports['service']['handle'].call(cmd)
+        print(cmd)
+        print(ret)
+        return ret.startswith('ok')  # device return 'ok' even out of range
+
+    def set_speed(self, speed):
+        '''
+        Change arm's moving speed (speed unit is mm/sec)
+
+        Args:
+            speed
+
+        Returns:
+            True if successed
+        '''
+        cmd = 'set cmd_sync'
+        cmd += ' _T10'
+        cmd += ' G0 F{}'.format(speed)
         ret = self._ports['service']['handle'].call(cmd)
         print(cmd)
         print(ret)
