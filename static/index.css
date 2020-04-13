@@ -1,0 +1,118 @@
+body {
+  background-color: #F5F5F5;
+  font-family: sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #e7e7e7;
+  background-color: #f3f3f3;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: #666;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+li a.active {
+  color: white;
+  background-color: #4CAF50;
+}
+
+.milab-logo {
+  margin-right: 15px;
+  width: 75px;
+  height: 30px;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  margin-top: 10px;
+}
+
+.modal-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+#blocklyDiv {
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3);
+  height: 800px;
+  width: 95%;
+  margin-top: 20px;
+  margin-bottom: 35px;
+  margin-left: 2%;
+}
+
+.modal-preview-Image {
+  border: 3px solid white;
+  display: block;
+  margin-left: auto;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
+}
+
+.tabs-header-font {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.footer-shadow {
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3);
+  background-color: #4B515D;
+}
+
+.tabs-badges {}
+
+select {
+  width: 105px;
+  text-align: center;
+  text-align-last: center;
+}
+
+input {
+  border: solid 0px blue;
+  box-shadow: none;
+}
+
+input:-moz-placeholder, input:focus {
+  box-shadow: none !important;
+}
+
+input:invalid {
+  box-shadow: 0 0 0px 0px;
+}
+
+input[type="text"] {
+  text-align: center;
+}
+
+input[type="number"] {
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+input[type="number"]:hover, input[type="number"]:focus {
+  -moz-appearance: number-input;
+}
+
+pacifico-font {
+  font-family: "Pacifico", cursive;
+}

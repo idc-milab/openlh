@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Blockly Demo: Generating JavaScript</title>
+    <script src="static/js/blockly_compressed.js"></script>
+    <script src="static/js/blocks_compressed.js"></script>
+    <script src="static/js/javascript_compressed.js"></script>
+    <script src="static/js/python_compressed.js"></script>
+    <script src="static/msg/js/en.js"></script>
+    <script src="static/js/app.js"></script>
+
+    <style>
+        body {
+            background-color: #fff;
+            font-family: sans-serif;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 140%;
+        }
+    </style>
+</head>
+<body>
+<p>
+    <button onclick="showCode()">Show JavaScript</button>
+    <button onclick="runCode()">Run JavaScript</button>
+    <button onclick="sendCode()">Play</button>
+<form action="/upload" method="post" enctype="multipart/form-data">
+      <span class="btn btn-default btn-file">
+        Browse <input type="file" name="image">
+      </span>
+
+    <input type="submit" value="Upload your image" class="btn btn-primary">
+</form>
+</p>
+<p>--- Upload your image in .png format ---</p>
+
+<div id="blocklyDiv" style="height: 1200px; width: 1200px;"></div>
+<div id="savedPrograms">
+    <span>Save program:</span>
+    <input type="text" name="programName" id="programName">
+    <label for="programName">Name:</label>
+    <button onclick="saveWorkspace()">Save</button>
+    <p><strong>Saved Programs:</strong></p>
+    <div>
+        <ul id="listOfPrograms">
+
+        </ul>
+
+    </div>
+    <p><strong>Saved Images:</strong></p>
+    <div>
+        <ul id="listOfImages">
+
+        </ul>
+    </div>
+
+</div>
+<xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
+    <category name="Image" colour="#ffdf6d">
+        <block type="print_image"></block>
+    </category>
+    <category name="Robot" colour="#8a868c">
+        <block type="robot_move"></block>
+        <block type="robot_position"></block>
+        <block type="robot_sleep"></block>
+        <block type="robot_wrist"></block>
+        <block type="robot_pump"></block>
+        <block type="get_position"></block>
+    </category>
+    <category name="Logic" colour="#5C81A6">
+        <block type="controls_if"></block>
+        <block type="logic_compare">
+            <field name="OP">EQ</field>
+        </block>
+        <block type="logic_operation">
+            <field name="OP">AND</field>
+        </block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean">
+            <field name="BOOL">TRUE</field>
+        </block>
+        <block type="logic_null"></block>
+        <block type="logic_ternary"></block>
+    </category>
+    <category name="Loops" colour="#5CA65C">
+        <block type="controls_repeat_ext">
+            <value name="TIMES">
+                <shadow type="math_number">
+                    <field name="NUM">10</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="controls_whileUntil">
+            <field name="MODE">WHILE</field>
+        </block>
+        <block type="controls_for">
+            <field name="VAR" id="U{ZeRYdWs1|!g]Qryiw(" variabletype="">i</field>
+            <value name="FROM">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="TO">
+                <shadow type="math_number">
+                    <field name="NUM">10</field>
+                </shadow>
+            </value>
+            <value name="BY">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="controls_forEach">
+            <field name="VAR" id="TFhZ%uLyA,;JW@x3+Csb" variabletype="">j</field>
+        </block>
+        <block type="controls_flow_statements">
+            <field name="FLOW">BREAK</field>
+        </block>
+    </category>
+    <category name="Math" colour="#5C68A6">
+        <block type="math_number">
+            <field name="NUM">0</field>
+        </block>
+        <block type="math_arithmetic">
+            <field name="OP">ADD</field>
+            <value name="A">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="B">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_single">
+            <field name="OP">ROOT</field>
+            <value name="NUM">
+                <shadow type="math_number">
+                    <field name="NUM">9</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_trig">
+            <field name="OP">SIN</field>
+            <value name="NUM">
+                <shadow type="math_number">
+                    <field name="NUM">45</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_constant">
+            <field name="CONSTANT">PI</field>
+        </block>
+        <block type="math_number_property">
+            <mutation divisor_input="false"></mutation>
+            <field name="PROPERTY">EVEN</field>
+            <value name="NUMBER_TO_CHECK">
+                <shadow type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_round">
+            <field name="OP">ROUND</field>
+            <value name="NUM">
+                <shadow type="math_number">
+                    <field name="NUM">3.1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_on_list">
+            <mutation op="SUM"></mutation>
+            <field name="OP">SUM</field>
+        </block>
+        <block type="math_modulo">
+            <value name="DIVIDEND">
+                <shadow type="math_number">
+                    <field name="NUM">64</field>
+                </shadow>
+            </value>
+            <value name="DIVISOR">
+                <shadow type="math_number">
+                    <field name="NUM">10</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_constrain">
+            <value name="VALUE">
+                <shadow type="math_number">
+                    <field name="NUM">50</field>
+                </shadow>
+            </value>
+            <value name="LOW">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="HIGH">
+                <shadow type="math_number">
+                    <field name="NUM">100</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_random_int">
+            <value name="FROM">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="TO">
+                <shadow type="math_number">
+                    <field name="NUM">100</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_random_float"></block>
+    </category>
+    <category name="Text" colour="#5CA68D">
+        <block type="text">
+            <field name="TEXT"></field>
+        </block>
+        <block type="text_join">
+            <mutation items="2"></mutation>
+        </block>
+        <block type="text_append">
+            <field name="VAR" id="qGz2wOv8)!Ofx;?M@v/^" variabletype="">item</field>
+            <value name="TEXT">
+                <shadow type="text">
+                    <field name="TEXT"></field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_length">
+            <value name="VALUE">
+                <shadow type="text">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_isEmpty">
+            <value name="VALUE">
+                <shadow type="text">
+                    <field name="TEXT"></field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_indexOf">
+            <field name="END">FIRST</field>
+            <value name="VALUE">
+                <block type="variables_get">
+                    <field name="VAR" id="F*)#1)lRV~YRv~GgdERT" variabletype="">text</field>
+                </block>
+            </value>
+            <value name="FIND">
+                <shadow type="text">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_charAt">
+            <mutation at="true"></mutation>
+            <field name="WHERE">FROM_START</field>
+            <value name="VALUE">
+                <block type="variables_get">
+                    <field name="VAR" id="F*)#1)lRV~YRv~GgdERT" variabletype="">text</field>
+                </block>
+            </value>
+        </block>
+        <block type="text_getSubstring">
+            <mutation at1="true" at2="true"></mutation>
+            <field name="WHERE1">FROM_START</field>
+            <field name="WHERE2">FROM_START</field>
+            <value name="STRING">
+                <block type="variables_get">
+                    <field name="VAR" id="F*)#1)lRV~YRv~GgdERT" variabletype="">text</field>
+                </block>
+            </value>
+        </block>
+        <block type="text_changeCase">
+            <field name="CASE">UPPERCASE</field>
+            <value name="TEXT">
+                <shadow type="text">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_trim">
+            <field name="MODE">BOTH</field>
+            <value name="TEXT">
+                <shadow type="text">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_print">
+            <value name="TEXT">
+                <shadow type="text">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_prompt_ext">
+            <mutation type="TEXT"></mutation>
+            <field name="TYPE">TEXT</field>
+            <value name="TEXT">
+                <shadow type="text">
+                    <field name="TEXT">abc</field>
+                </shadow>
+            </value>
+        </block>
+    </category>
+    <category name="Lists" colour="#745CA6">
+        <block type="lists_create_with">
+            <mutation items="0"></mutation>
+        </block>
+        <block type="lists_create_with">
+            <mutation items="3"></mutation>
+        </block>
+        <block type="lists_repeat">
+            <value name="NUM">
+                <shadow type="math_number">
+                    <field name="NUM">5</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="lists_length"></block>
+        <block type="lists_isEmpty"></block>
+        <block type="lists_indexOf">
+            <field name="END">FIRST</field>
+            <value name="VALUE">
+                <block type="variables_get">
+                    <field name="VAR" id="?#8~*L0D}=H$n~5ipzLZ" variabletype="">list</field>
+                </block>
+            </value>
+        </block>
+        <block type="lists_getIndex">
+            <mutation statement="false" at="true"></mutation>
+            <field name="MODE">GET</field>
+            <field name="WHERE">FROM_START</field>
+            <value name="VALUE">
+                <block type="variables_get">
+                    <field name="VAR" id="?#8~*L0D}=H$n~5ipzLZ" variabletype="">list</field>
+                </block>
+            </value>
+        </block>
+        <block type="lists_setIndex">
+            <mutation at="true"></mutation>
+            <field name="MODE">SET</field>
+            <field name="WHERE">FROM_START</field>
+            <value name="LIST">
+                <block type="variables_get">
+                    <field name="VAR" id="?#8~*L0D}=H$n~5ipzLZ" variabletype="">list</field>
+                </block>
+            </value>
+        </block>
+        <block type="lists_getSublist">
+            <mutation at1="true" at2="true"></mutation>
+            <field name="WHERE1">FROM_START</field>
+            <field name="WHERE2">FROM_START</field>
+            <value name="LIST">
+                <block type="variables_get">
+                    <field name="VAR" id="?#8~*L0D}=H$n~5ipzLZ" variabletype="">list</field>
+                </block>
+            </value>
+        </block>
+        <block type="lists_split">
+            <mutation mode="SPLIT"></mutation>
+            <field name="MODE">SPLIT</field>
+            <value name="DELIM">
+                <shadow type="text">
+                    <field name="TEXT">,</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="lists_sort">
+            <field name="TYPE">NUMERIC</field>
+            <field name="DIRECTION">1</field>
+        </block>
+    </category>
+    <category name="Colour" colour="#A6745C">
+        <block type="colour_picker">
+            <field name="COLOUR">#ff0000</field>
+        </block>
+        <block type="colour_random"></block>
+        <block type="colour_rgb">
+            <value name="RED">
+                <shadow type="math_number">
+                    <field name="NUM">100</field>
+                </shadow>
+            </value>
+            <value name="GREEN">
+                <shadow type="math_number">
+                    <field name="NUM">50</field>
+                </shadow>
+            </value>
+            <value name="BLUE">
+                <shadow type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="colour_blend">
+            <value name="COLOUR1">
+                <shadow type="colour_picker">
+                    <field name="COLOUR">#ff0000</field>
+                </shadow>
+            </value>
+            <value name="COLOUR2">
+                <shadow type="colour_picker">
+                    <field name="COLOUR">#3333ff</field>
+                </shadow>
+            </value>
+            <value name="RATIO">
+                <shadow type="math_number">
+                    <field name="NUM">0.5</field>
+                </shadow>
+            </value>
+        </block>
+    </category>
+    <sep></sep>
+    <category name="Variables" colour="#A65C81" custom="VARIABLE"></category>
+    <category name="Functions" colour="#9A5CA6" custom="PROCEDURE"></category>
+</xml>
+
+<xml id="startBlocks" style="display: none">
+    <block type="controls_if" inline="false" x="20" y="20">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+            <block type="logic_compare" inline="true">
+                <field name="OP">EQ</field>
+                <value name="A">
+                    <block type="math_arithmetic" inline="true">
+                        <field name="OP">MULTIPLY</field>
+                        <value name="A">
+                            <block type="math_number">
+                                <field name="NUM">6</field>
+                            </block>
+                        </value>
+                        <value name="B">
+                            <block type="math_number">
+                                <field name="NUM">7</field>
+                            </block>
+                        </value>
+                    </block>
+                </value>
+                <value name="B">
+                    <block type="math_number">
+                        <field name="NUM">42</field>
+                    </block>
+                </value>
+            </block>
+        </value>
+        <statement name="DO0">
+            <block type="text_print" inline="false">
+                <value name="TEXT">
+                    <block type="text">
+                        <field name="TEXT">Don't panic</field>
+                    </block>
+                </value>
+            </block>
+        </statement>
+        <statement name="ELSE">
+            <block type="text_print" inline="false">
+                <value name="TEXT">
+                    <block type="text">
+                        <field name="TEXT">Panic</field>
+                    </block>
+                </value>
+            </block>
+        </statement>
+    </block>
+</xml>
+
+<script>
+
+    var demoWorkspace = Blockly.inject('blocklyDiv',
+        {
+            media: '../../media/',
+            toolbox: document.getElementById('toolbox')
+        });
+    Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
+        demoWorkspace);
+
+    function loadXml(xml_text) {
+        demoWorkspace.clear();
+        var xml = Blockly.Xml.textToDom(xml_text);
+        Blockly.Xml.domToWorkspace(xml, demoWorkspace);
+    }
+
+    function getProgram(programName) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'get_code?name=' + programName);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status !== 200) {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            } else {
+                var response = JSON.parse(xhr.response);
+                loadXml(response.code)
+            }
+        };
+        xhr.send(null);
+    }
+
+    function addProgramToList(programName) {
+        var ul = document.getElementById("listOfPrograms");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(programName));
+        var button = document.createElement("BUTTON");
+        button.textContent = "Load";
+        button.onclick = function () {
+            getProgram(programName);
+            alert(programName + " was loaded successfully.")
+        };
+        var var_space = document.createTextNode("    ->    ");
+        li.appendChild(var_space);
+        li.appendChild(button);
+        ul.appendChild(li);
+    }
+
+    function addImageToList(imageName) {
+        var ul = document.getElementById("listOfImages");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(imageName));
+        var button = document.createElement("BUTTON");
+        button.textContent = "Show Layout";
+        button.onclick = function () {
+            window.open("./" + imageName + ".html")
+        };
+        var var_space = document.createTextNode("    ->    ");
+        li.appendChild(var_space);
+        li.appendChild(button);
+        ul.appendChild(li);
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        getPrograms();
+        getImages();
+    });
+
+    function cleanProgramList() {
+        var ul = document.getElementById("listOfPrograms");
+        ul.innerHTML = "";
+    }
+
+    function cleanImageList() {
+        var ul = document.getElementById("listOfImages");
+        ul.innerHTML = "";
+    }
+
+    function getPrograms() {
+        var xhr = new XMLHttpRequest();
+        {#      var code = getInitCode() + code + getFinalCode();#}
+
+        xhr.open('GET', 'get_programs');
+        {#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status !== 200) {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            } else {
+                cleanProgramList();
+                var response = JSON.parse(xhr.response);
+                for (var program in response.programs) {
+                    addProgramToList(response.programs[program]);
+                }
+            }
+        };
+        {#      xhr.send(encodeURI('name=' + newName));#}
+        xhr.send();
+        // Your code to run since DOM is loaded and ready
+    }
+
+    function getImages() {
+        var xhr = new XMLHttpRequest();
+        {#      var code = getInitCode() + code + getFinalCode();#}
+
+        xhr.open('GET', 'get_images');
+        {#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status !== 200) {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            } else {
+                cleanImageList();
+                var response = JSON.parse(xhr.response);
+                for (var image in response.images) {
+                    addImageToList(response.images[image]);
+                }
+            }
+        };
+        {#      xhr.send(encodeURI('name=' + newName));#}
+        xhr.send();
+        // Your code to run since DOM is loaded and ready
+    }
+
+    function showCode() {
+        // Generate JavaScript code and display it.
+        Blockly.Python.INFINITE_LOOP_TRAP = null;
+        var code = Blockly.Python.workspaceToCode(demoWorkspace);
+        alert(code);
+    }
+
+    function runCode() {
+        // Generate JavaScript code and run it.
+        window.LoopTrap = 1000;
+        Blockly.JavaScript.INFINITE_LOOP_TRAP =
+            'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+        var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+        try {
+            eval(code);
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    function getInitCode() {
+        var code = '';
+        code += 'from uf.wrapper.swift_api import SwiftAPI\n';
+        code += 'from uf.utils.log import *\n';
+        code += 'from time import sleep\n';
+        code += 'logger_init(logging.DEBUG)\n';
+        code += 'global swift\n';
+        code += "swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}\n";
+        code += "sleep(2)\n";
+
+        code += 'print("Allowing extrusion")\n';
+        code += 'swift.send_cmd_sync("M302 S0")\n';
+        return code;
+    }
+
+    function getFinalCode() {
+        var code = '';
+        code += 'swift.set_position(e=0, speed=1500, timeout=30, wait=True)\n';
+        code += 'swift.set_position(120, 0, 50, speed=1500, timeout=30, wait=True)\n';
+        code += 'swift.close_conn()\n';
+        return code;
+    }
+
+    function sendCode() {
+        var code = Blockly.Python.workspaceToCode(demoWorkspace);
+        var newName = 'John Smith',
+            xhr = new XMLHttpRequest();
+        var code = getInitCode() + code + getFinalCode();
+
+        xhr.open('POST', 'run_code');
+        {#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status !== 200) {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        {#      xhr.send(encodeURI('name=' + newName));#}
+        xhr.send(JSON.stringify({code: code}));
+    }
+
+    function saveWorkspace() {
+        var xml = Blockly.Xml.workspaceToDom(demoWorkspace);
+        var xml_text = Blockly.Xml.domToText(xml);
+        var program_name = document.getElementById("programName").value;
+        {#      Blockly.Xml.domToPrettyText#}
+        alert(xml_text);
+        var xhr = new XMLHttpRequest();
+        {#      var code = getInitCode() + code + getFinalCode();#}
+
+        xhr.open('POST', 'save_xml');
+        {#      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status !== 200) {
+                alert('Request failed.  Returned status of ' + xhr.status);
+            } else {
+                document.getElementById("programName").value = "";
+                addProgramToList(program_name);
+            }
+        };
+        {#      xhr.send(encodeURI('name=' + newName));#}
+        xhr.send(JSON.stringify({xml: xml_text, name: program_name}));
+
+    }
+
+</script>
+
+</body>
+</html>

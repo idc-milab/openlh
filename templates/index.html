@@ -2,71 +2,41 @@
 <html>
 
 <head>
+    <meta charset="utf-8">
+    <title>OpenLH</title>
+    <link rel="stylesheet" type="text/css" href="static/index.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Pacifico&display=swap"
+        rel="stylesheet">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-    <meta charset="utf-8">
-    <title>OpenLH</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/509e18566b.js" crossorigin="anonymous"></script>
+
+    <script src="static/js/index.js"></script>
     <script src="static/js/blockly_compressed.js"></script>
     <script src="static/js/blocks_compressed.js"></script>
     <script src="static/js/javascript_compressed.js"></script>
     <script src="static/js/python_compressed.js"></script>
     <script src="static/msg/js/en.js"></script>
     <script src="static/js/app.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="static/js/wheelzoom.js"></script>
 
-    <style>
-        body {
-            background-color: #F5F5F5;
-            font-family: sans-serif;
-        }
-
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            border: 1px solid #e7e7e7;
-            background-color: #f3f3f3;
-        }
-
-        li {
-            float: left;
-        }
-
-        li a {
-            display: block;
-            color: #666;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        li a:hover:not(.active) {
-            background-color: #ddd;
-        }
-
-        li a.active {
-            color: white;
-            background-color: #4CAF50;
-        }
-    </style>
 </head>
 
 <body>
 
     <!-- NavBar -->
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">OpenLH</a>
+    <nav class="navbar navbar-dark bg-dark " style="box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.4); background-color: #4B515D;">
+        <a class="navbar-brand pacifico-font" href="#">OpenLH</a>
         <div>
-            <img src="http://milab.idc.ac.il/wp-content/uploads/2017/04/milab-logo.png" width="75" height="30"
-                class="d-inline-block align-top" alt="" style="margin-right: 15px">
+            <img class="milab-logo" src="http://milab.idc.ac.il/wp-content/uploads/2017/04/milab-logo.png"
+                class="d-inline-block align-top" alt="">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -75,15 +45,14 @@
 
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <!--            <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>-->
                 <a class="nav-item nav-link" href="" data-toggle="modal" data-target="#About">About</a>
                 <a class="nav-item nav-link" href="https://www.instructables.com/id/OpenLH/">Instructables Page</a>
-                <a class="nav-item nav-link" href="https://github.com/idc-milab/openlh">GitHub</a>
+                <a class="nav-item nav-link" href="https://github.com/idc-milab/openlh"><i
+                        class="fa fa-trash\"></i>GitHub</a>
                 <a class="nav-item nav-link"
                     href="http://milab.idc.ac.il/wp-content/uploads/2019/01/OpenLH.pdf">Publication</a>
             </div>
         </div>
-
         <!-- About Modal -->
         <div class="modal fade" id="About">
             <div class="modal-dialog">
@@ -96,6 +65,8 @@
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
+                        <img class="modal-image" src="static/jpg/about.jpg" height="250" width="350"></img>
+                        <br>
                         <p>Liquid handling robots are robots that can move liquids with high accuracy allowing to
                             conduct
                             high throughput experiments such as large scale screenings, bioprinting and execution of
@@ -134,17 +105,22 @@
         </div>
 
     </nav>
-
     <!-- Buttons line -->
     <div style="margin-top: 20px; margin-left: 5px">
-        <button class="btn btn-success" onclick="showCode()" id="ShowCode" style="margin:3px;">
+        <button class="btn btn-secondary" onclick="showCode()" id="ShowCode" style="margin:3px;">
             Show Code
         </button>
-        <button class="btn btn-success" onclick="runCode()" id="RunJavaScript" style="margin:3px;">Run JavaScript
-        </button>
-        <button class="btn btn-success" onclick="runWorkspaceCode()" id="Play" style="margin:3px;">
-            Run with OpenLH
-        </button>
+        <!-- <button class="btn btn-success" onclick="runCode()" id="RunJavaScript" style="margin:3px;">Run JavaScript
+        </button> -->
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-success" onclick="runWorkspaceCode()" id="Play"
+                style="margin-left:3px; margin-right:0px;">
+                Run with OpenLH
+            </button>
+            <button class="btn btn-danger" onclick="abort()" id="Abort" style="margin-right:3px;">
+                Abort
+            </button>
+        </div>
 
         <div class="btn-group" role="group" aria-label="Basic example">
             <button class="btn btn-secondary" onclick="savePosition()" id="SavePosition" style="margin-left:5px">Manual
@@ -163,18 +139,25 @@
             <i class="fa fa-upload"></i>
         </button>
 
+        <!-- Button to create cellular automaton program -->
+        <button type="button" id="cellularAutomatonButton"
+            class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" data-toggle="modal"
+            data-target="#cellularAutomataModal" style="margin-left:6px;" title="Cellular Automaton">
+            <i class="fab fa-firstdraft"></i>
+        </button>
+
         <!-- Button to Open the Saved program Modal -->
         <button type="button" id="savedProgramButton"
             class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" data-toggle="modal"
             data-target="#saveProgramModal" style="margin-left:6px;" title="Save Program">
-            <i class="fa fa-save"></i>
+            <i class="far fa-save"></i>
         </button>
 
         <!-- Button to clear the workspace -->
         <button type="button" id="cleanWorkspaceButton"
             class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="margin-left:6px;"
-            title="Clear Workspace" ; onclick="cleanWorkspace()">
-            <i class="fa fa-trash"></i>
+            title="Clear Workspace" data-toggle="modal" data-target="#clearWorkspaceModal">
+            <i class="far fa-trash-alt"></i>
         </button>
 
 
@@ -190,14 +173,34 @@
                     </div>
                     <!-- Modal body -->
                     <div class="modal-body">
+                        <img class="modal-image" src="static/jpg/upload.jpg" height="160" width="300"></img>
+                        <br>
+                        <p> Create visual art using live bacteria as bio-ink. Load a PNG picture, then add a 'print
+                            image' block from the image section of the toolbox. All uploaded images will appear on the
+                            'Printing Patterns' section.
+                        </p>
                         <form action="/upload" method="post" enctype="multipart/form-data">
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="fileInputOnUploadModal"
+                                        accept="image/png" name="image">
+                                    <label class="custom-file-label" for="fileInputOnUploadModal">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit" id="UploadButtonUploadModal"
+                                        disabled>Upload</button>
+                                </div>
+                            </div>
+                        </form>
+                        <p><b>--- Upload your image in .png format ---</b></p>
+                        <!-- <form action="/upload" method="post" enctype="multipart/form-data">
                             <span class="btn btn-default btn-file">
                                 Browse <input type="file" name="image" accept="image/png">
                             </span>
                             <input type="submit" value="Upload">
-                        </form>
+                        </form> -->
                         <p></p>
-                        <p>--- Upload your image in .png format ---</p>
+
                     </div>
 
                     <!-- Modal footer -->
@@ -205,6 +208,80 @@
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
 
+                </div>
+            </div>
+        </div>
+
+        <!-- Cellular Automata Modal -->
+        <div class="modal fade" id="cellularAutomataModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Generate a Cellular Automaton Pattern</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <p> Create beautifull printing patterns based on elementary cellular automaton rules. All
+                            created
+                            patterns will appear on the 'Printing Patterns' section.
+                        </p>
+                        <div class="column">
+                            <form action="/ca_generate" method="post" enctype="multipart/form-data"
+                                id="cellularAutomatonForm">
+                                <div class="input-group mb-3" style="margin-top: 10px;">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Initial state mode</span>
+                                    </div>
+                                    <select name="mode">
+                                        <option value="N">Normal</option>
+                                        <option value="R">Random</option>
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Rule</span>
+                                    </div>
+                                    <input type="number" name="rule" id="ruleNumber" class="form-control"
+                                        placeholder="(0-255)" aria-describedby="basic-addon2" min="1" max="255"
+                                        required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="ruleNumber"
+                                            onclick="changePreviewImageOnModal()">Preview</button>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Number of steps</span>
+                                    </div>
+                                    <input type="number" name="steps" id="numOfSteps" class="form-control"
+                                        placeholder="" aria-describedby="basic-addon2" min="1" required>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Pattern name</span>
+                                    </div>
+                                    <input type="text" name="name" id="patternName" class="form-control" placeholder=""
+                                        aria-describedby="basic-addon2" required>
+                                </div>
+                        </div>
+                        <p></p>
+                        <div class="column">
+                            <!-- <br> -->
+                            <img id="previewImage" class="modal-preview-Image rounded zoom"
+                                src="static/jpg/cellular_automaton.jpg" height="200" width="200" data-toggle="tooltip"
+                                title="Use the mouse wheel to zoom!" data-placement="bottom"></img>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Generate" name="form[Submit]" id="Submit">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -222,9 +299,25 @@
 
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <label for="programName">Name:</label>
+                        <p> You can save your blockly programs for later use. All saved programs will appear on the
+                            'Saved Programs' section.</p>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Name</span>
+                            </div>
+                            <div>
+                                <input type="text" name="programName" id="programName" class="form-control"
+                                    placeholder="your program name" aria-label="Recipient's username"
+                                    aria-describedby="basic-addon2" style="width: 200px;">
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="Save"
+                                    onclick="saveWorkspace()" data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                        <!-- <label for="programName">Name:</label>
                         <input type="text" name="programName" id="programName">
-                        <button onclick="saveWorkspace()">Save</button>
+                        <button onclick="saveWorkspace()" data-dismiss="modal">Save</button> -->
                     </div>
 
                     <!-- Modal footer -->
@@ -236,59 +329,127 @@
             </div>
         </div>
 
-    </div>
-
-    <!-- Blockly -->
-    <div id="blocklyDiv"
-        style="box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3); height: 800px; width: 95%; margin-top: 20px; margin-bottom: 35px; margin-left: 2%">
-    </div>
-
-    <!-- Tabs - saved programs and uploaded images -->
-    <div id="tabs">
-
-        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-            <div class="mdl-tabs__tab-bar">
-                <a href="#programs-panel" class="mdl-tabs__tab is-active"
-                    style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Saved Programs</a>
-                <a href="#images-panel" class="mdl-tabs__tab"
-                    style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Uploaded Images</a>
-            </div>
-
-            <div class="mdl-tabs__panel is-active" id="programs-panel">
-                <ul id="listOfPrograms" class='mdl-list'>
-
-                </ul>
-            </div>
-            <div class="mdl-tabs__panel" id="images-panel">
-                <ul id="listOfImages" class="'mdl-list">
-
-                </ul>
+        <!--Clear Workspace Modal -->
+        <div class="modal fade" tabindex="-1" role="dialog" id="clearWorkspaceModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Clear Workspace</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You are about to clear your blockly workspace, this procedure is irreversible. Note that
+                            you can save your program for later use using the <b>Save Program</b> feature.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" onclick="cleanWorkspace()"
+                            data-dismiss="modal">Discard changes</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+
+    <!-- Blockly -->
+    <div id="blocklyDiv"></div>
+
+    <!-- Tabs - saved programs, uploaded images and cellular automaton patterns -->
+    <div id="tabs">
+
+        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+            <div class="mdl-tabs__tab-bar">
+                <a href="#programs-panel" class="mdl-tabs__tab is-active tabs-header-font">Saved Programs</a>
+                <a href="#images-panel" class="mdl-tabs__tab tabs-header-font">Printing Patterns</a>
+            </div>
+            <div class="mdl-tabs__panel is-active" id="programs-panel">
+                <ul id="listOfPrograms" class='mdl-list'>
+                </ul>
+            </div>
+            <div class="mdl-tabs__panel" id="images-panel" style="background-color: #f2f2f2;">
+                <span class="badge badge-pill badge-secondary" style="margin: 12px; font-size: 15px;">Uploaded
+                    Images</span>
+                <ul id="listOfImages" class="'mdl-list">
+                </ul>
+                <span class="badge badge-pill badge-secondary"
+                    style="margin-left: 12px; margin-bottom: 12px; font-size: 15px;">Cellular
+                    Automaton Patterns</span>
+                <ul id="listOfCellularAutomatonPatterns" class="'mdl-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer font-small"
+        style="box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3); background-color: #4B515D;">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3"
+            style="color: white; box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.5);">© 2020 Copyright:
+            <a href="http://milab.idc.ac.il/" class="text-white"> miLAB.idc.ac.il</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+
     <!-- XMLs -->
     <xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
-        <category name="Robot" colour=250>
+        <category name="Robot" colour=250 style="font-family: Georgia, 'Times New Roman', Times, serif;">
             <block type="robot_move"></block>
-            <block type="pick_pipette"></block>
-            <!-- <block type="drop_pipette"></block> -->
-            <block type="load_Material"></block>
-            <block type="robot_position_new"></block>
-            <block type="robot_position_location_only"></block>
-            <!-- <block type="robot_position"></block> -->
-            <!-- <block type="robot_position_with_custom_position"></block> -->
-            <block type="robot_sleep"></block>
+            <block type="robot_move_relative"></block>
+            <block type="pick_or_drop_pipette"></block>
+            <block type="load_Material">
+                <value name="amount">
+                    <shadow type="math_number">
+                        <field name="NUM">30</field>
+                    </shadow>
+                </value>
+            </block>
+            </block>
+            <block type="robot_speed">
+                <value name="speed">
+                    <shadow type="math_number">
+                        <field name="NUM">10000</field>
+                    </shadow>
+                </value>
+            </block>
             <block type="robot_wrist"></block>
             <block type="robot_pump"></block>
+            <block type="robot_sleep"></block>
         </category>
-        <category name="Modules" colour="#808080">
+        <category name="Coordinates" colour=270>
+            <block type="robot_position_location_only"></block>
+            <block type="robot_position_new"></block>
+            <block type="robot_position"></block>
+            <!-- <block type="robot_position_arithmetic"></block> -->
+            <block type="robot_position_arithmetic_puzzle">
+                <value name="X">
+                    <shadow type="math_number">
+                        <field name="NUM">0</field>
+                    </shadow>
+                </value>
+                <value name="Y">
+                    <shadow type="math_number">
+                        <field name="NUM">0</field>
+                    </shadow>
+                </value>
+                <value name="Z">
+                    <shadow type="math_number">
+                        <field name="NUM">0</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="robot_position_current"></block>
+        </category>
+        <category name="BioPrint" colour="#993DFF">
+            <block type="print_pattern_mini"></block>
+            <block type="print_pattern"></block>
+        </category>
+        <category name="Modules (beta)" colour="#808080">
             <block type="shaker_module"></block>
             <block type="heater_module"></block>
             <!-- <block type="materials"></block> -->
-        </category>
-        <category name="Image" colour="#A6745C">
-            <block type="print_image"></block>
         </category>
         <sep></sep>
         <category name="Logic" colour="#5C81A6">
@@ -442,7 +603,7 @@
             </block>
             <block type="math_random_float"></block>
         </category>
-        <category name="Text" colour="#5CA68D">
+        <!-- <category name="Text" colour="#5CA68D">
             <block type="text">
                 <field name="TEXT"></field>
             </block>
@@ -535,7 +696,7 @@
                     </shadow>
                 </value>
             </block>
-        </category>
+        </category> -->
         <category name="Lists" colour="#745CA6">
             <block type="lists_create_with">
                 <mutation items="0"></mutation>
@@ -663,6 +824,61 @@
 
 
     <script>
+
+        // jQuerys
+
+        // clear all input values when loading the page
+        $(window).on('load', function () {
+            $('#UploadButtonUploadModal').attr('disabled', true);
+            $('#programName').val('');
+            $('#ruleNumber').val('');
+            $('#numOfSteps').val('');
+            $('#patternName').val('');
+        });
+
+        // on image upload modal, show file name after browsing 
+        $('#fileInputOnUploadModal').on('change', function () {
+            //get the file name
+            var fileName = $(this).val();
+            var cleanFileName = fileName.replace('C:\\fakepath\\', " ");
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').html(cleanFileName);
+        })
+
+        // allow uploading an image only when a png exist
+        $('input[type=file]').change(function () {
+            if ($('input[type=file]').val() == '') {
+                $('#UploadButtonUploadModal').attr('disabled', true);
+            }
+            else {
+                $('#UploadButtonUploadModal').attr('disabled', false);
+            }
+        })
+
+        // allow saving a program only when a program name exists
+        $("#Save").prop('disabled', true);
+        var saveProgramModalFieldsToValidate = jQuery('#programName'),
+            valid = false;
+        saveProgramModalFieldsToValidate.keyup(function () {
+            if (jQuery(this).val().length > 0) {
+                jQuery(this).data('valid', true);
+            } else {
+                jQuery(this).data('valid', false);
+            }
+            saveProgramModalFieldsToValidate.each(function () {
+                if (jQuery(this).data('valid') == true) {
+                    valid = true;
+                } else {
+                    valid = false;
+                }
+            });
+            if (valid === true) {
+                jQuery("#Save").prop('disabled', false);
+            } else {
+                jQuery("#Save").prop('disabled', true);
+            }
+        });
+
         // init the Blockly workspace
         let demoWorkspace = Blockly.inject('blocklyDiv',
             {
@@ -677,463 +893,16 @@
         document.addEventListener("DOMContentLoaded", function (event) {
             getPrograms();
             getImages();
+            getCellularAutomatonPatterns();
         });
 
-        /**
-         * add xml text representing blocks to the workspace (as blocks)
-         * @param   {string}    xmlText    string representing a xml to be added to the workspace
-         * @param   {boolean}   clear      true for clearing the workspace, false for appending to the workspace
-         */
-        function loadXml(xmlText, clear) {
-            if (clear)
-                demoWorkspace.clear();
-            let xml = Blockly.Xml.textToDom(xmlText);
-            Blockly.Xml.domToWorkspace(xml, demoWorkspace);
-        }
+        // enable zoom for preview image on cellular automaton modal
+        wheelzoom(document.querySelector('img.zoom'));
 
 
-        /**
-         * gets a program name and requests the xml text from the server
-         * @param   {string}    programName     name of the saved program
-         */
-        function getProgram(programName) {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', 'get_code?name=' + programName);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-                else {
-                    let response = JSON.parse(xhr.response);
-                    loadXml(response.code, true)
-                }
-            };
-            xhr.send(null);
-        }
-
-
-        /**
-         * adds programName to the programs list.
-         * including Load and trash buttons
-         * @param   {string}    programName     name of the saved program
-         */
-        function addProgramToList(programName) {
-            let ul = document.getElementById("listOfPrograms");
-            let li = document.createElement("li");
-            ul.className = "mdl-list";
-            li.className = "mdl-list__item";
-            li.appendChild(document.createTextNode(programName));
-            let loadButton = document.createElement("BUTTON");
-            let deleteButton = document.createElement("BUTTON");
-            loadButton.textContent = "Load";
-            loadButton.onclick = function () {
-                getProgram(programName);
-                alert(programName + " was loaded successfully.")
-            };
-            deleteButton.innerHTML = "<i class=\"fa fa-trash\"></i>"
-            deleteButton.onclick = function () {
-                deleteProgram(programName)
-                li.parentNode.removeChild(li);
-            };
-            let varSpace = document.createTextNode("    ->    ");
-            li.appendChild(varSpace);
-            li.appendChild(loadButton);
-            li.appendChild(deleteButton);
-            ul.appendChild(li);
-        }
-
-
-        /**
-         * adds imageName to the images list.
-         * including Show Layout and trash buttons
-         * @param   {string}    imageName     name of the uploaded image
-         */
-        function addImageToList(imageName) {
-            let ul = document.getElementById("listOfImages");
-            let li = document.createElement("li");
-            ul.className = "mdl-list";
-            li.className = "mdl-list__item";
-
-            li.appendChild(document.createTextNode(imageName));
-            let layoutButton = document.createElement("BUTTON");
-            let deleteButton = document.createElement("BUTTON");
-            layoutButton.textContent = "Show Layout";
-            layoutButton.onclick = function () {
-                window.open("./" + imageName + ".html")
-            };
-            deleteButton.textContent = "Delete";
-            deleteButton.innerHTML = "<i class=\"fa fa-trash\"></i>"
-            deleteButton.onclick = function () {
-                deleteImage(imageName)
-                li.parentNode.removeChild(li);
-            };
-            let varSpace = document.createTextNode("    ->    ");
-
-            li.appendChild(varSpace);
-            li.appendChild(layoutButton);
-            li.appendChild(deleteButton);
-            ul.appendChild(li);
-        }
-
-
-        /**
-         * delete a program from the saved programs list.
-         * @param   {string}    programName     name of the saved program
-         */
-        function deleteProgram(programName) {
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'delete_xml');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-            };
-            xhr.send(JSON.stringify({ name: programName }));
-        }
-
-
-        /**
-         * delete an image from the uploaded images list.
-         * @param   {string}    programName     name of the uploaded image
-         */
-        function deleteImage(imageName) {
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'delete_image');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-            };
-            xhr.send(JSON.stringify({ name: imageName }));
-        }
-
-        /** cleans the workspace from blocks */
-        function cleanWorkspace() {
-            demoWorkspace.clear();
-        }
-
-        /** cleans the saved programs list */
-        function cleanProgramList() {
-            let ul = document.getElementById("listOfPrograms");
-            ul.innerHTML = "";
-        }
-
-
-        /** cleans the uploaded images list */
-        function cleanImageList() {
-            let ul = document.getElementById("listOfImages");
-            ul.innerHTML = "";
-        }
-
-
-        /** requests a list of the saved programs from server and add their names to the programs list. */
-        function getPrograms() {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', 'get_programs');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-                else {
-                    cleanProgramList();
-                    let response = JSON.parse(xhr.response);
-                    for (let program in response.programs) {
-                        addProgramToList(response.programs[program]);
-                    }
-                }
-            };
-            //      xhr.send(encodeURI('name=' + newName));#}
-            xhr.send();
-        }
-
-
-        /** requests a list of the uploaded images from server and add their names to the uploaded images list. */
-        function getImages() {
-            let xhr = new XMLHttpRequest();
-            //      let code = getInitCode() + code + getFinalCode();#}
-
-            xhr.open('GET', 'get_images');
-            //      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');#}
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-                else {
-                    cleanImageList();
-                    let response = JSON.parse(xhr.response);
-                    for (let image in response.images) {
-                        addImageToList(response.images[image]);
-                    }
-                }
-            };
-            xhr.send();
-        }
-
-
-        /** Generate JavaScript code and display it. */
-        function showCode() {
-
-            Blockly.Python.INFINITE_LOOP_TRAP = null;
-            let code = Blockly.Python.workspaceToCode(demoWorkspace);
-            alert(code);
-        }
-
-
-        /** Generate JavaScript code and executes it. */
-        function runCode() {
-            window.LoopTrap = 1000;
-            Blockly.JavaScript.INFINITE_LOOP_TRAP =
-                'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-            let code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
-            Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-            try {
-                eval(code);
-            } catch (e) {
-                alert(e);
-            }
-        }
-
-
-        /** 
-         *  generates and run python code which puts the arm's motors on disjoint mode, allowing the user to physically maneuverit to differnet locations.
-         *  will exit the mode (rejoin arm's motors) while the user is changing getting_position key in the live_position 
-         *  JSON file (by clicking 'Stop').
-         */
-        function savePosition() {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', '/is_arm_connected');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-                else {
-                    let response = JSON.parse(xhr.response);
-                    if (response.connected == "0")  // uarm is not connected
-                    {
-                        alert("UArm is not connected properly");
-                        return;
-                    }
-
-                    // manage buttons disabling
-                    document.getElementById("Add").disabled = false;
-                    document.getElementById("Stop").disabled = false;
-                    document.getElementById("SavePosition").disabled = true;
-                    document.getElementById("RunJavaScript").disabled = true;
-                    document.getElementById("Play").disabled = true;
-
-                    // generate code which disjoints the arm and save it's current location to a JSON file.
-                    let code = "\nfrom uf.wrapper.swift_api import SwiftAPI\n" +
-                        "from uf.utils.log import *\n" +
-                        "from time import *\n" +
-                        "getting_position = \"True\"  # will be \"True\" while the user is capturing positions\n" +
-                        "logger_init(logging.DEBUG)\n" +
-                        "swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}\n" +
-                        "sleep(2)\n" +
-                        // save the current location to live_position.JSON
-                        "def report_position(position):\n" +
-                        "    global getting_position\n" +
-                        "    file = open(\"live_position.json\", \"r\")\n" +
-                        "    data = file.readline()\n" +
-                        "    getting_position = data[22:26]\n" +
-                        "    if getting_position != \"True\":  # the user pressed the STOP button on index.html\n" +
-                        "        return\n" +
-                        "    file.close()\n" +
-                        "    file = open(\"live_position.json\", \"w\")\n" +
-                        "    json_text = \"\\\"getting_position\\\": \\\"{getting_position}\\\", \\\"x\\\": \\\"{x}\\\", \\\"y\\\": \\\"{y}\\\", \\\"z\\\": \\\"{z}\\\"\"\n" +
-                        "    json_text = json_text.format(x=position[0], y=position[1], z=position[2], getting_position=getting_position)\n" +
-                        "    json_text = \"{\" + json_text + \"}\"\n" +
-                        "    file.write(json_text)\n" +
-                        "    file.close()\n" +
-                        // initialize the JSON file to default values
-                        "file = open(\"live_position.json\", \"w\")\n" +
-                        "json_text = \"{\\\"getting_position\\\": \\\"True\\\", \\\"x\\\": \\\"0\\\", \\\"y\\\": \\\"0\\\", \\\"z\\\": \\\"0\\\"}\"\n" +
-                        "file.write(json_text)\n" +
-                        "file.close()\n" +
-                        "sleep(2)\n" +
-                        // disjoin motors and write the position to the JSON file
-                        "swift.send_cmd_sync(\"M2019\")\n" +
-                        "swift.register_report_position_callback(report_position)\n" +
-                        "swift.set_report_position(1)\n" +
-                        "while getting_position == \"True\":\n" +
-                        "    pass\n" +
-                        // rejoin motors
-                        "swift.send_cmd_sync(\"M302 S0\")\n" +
-                        "sleep(1)\n" +
-                        "swift.close_conn()\n";
-                    sendCode(code);
-                }
-            }
-            xhr.send();
-        }
-
-
-        /** 
-         *  while in disjoint mode, request current X,Y,Z coordinates representing the position of the arm.
-         *  create a new block with those coordinates and add it to the workspace
-         */
-        function addPositionBlock() {
-            // request position from server
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', 'get_position');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                } else {
-                    let position = JSON.parse(xhr.response).position;
-                    console.log(position);
-                    // create the new block with string representing the xml and add it to workspace
-                    let positionBlockXML = '<xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables><block type="robot_position_new" id=":[.^%w}.^urrSE28/$54" x="274" y="57"><field name="X">' + position.x + '</field><field name="Y">' + position.y + '</field><field name="Z">' + position.z + '</field></block></xml>'
-                    loadXml(positionBlockXML, false);
-                }
-
-            };
-            xhr.send(null);
-        }
-
-
-        /** 
-         *  changing getting_position key in the live_position JSON file to exit disjoint mode (rejoin arm's motors).
-         */
-        function stopSavePosition() {
-            // manage buttons disabling
-            document.getElementById("Add").disabled = true;
-            document.getElementById("Stop").disabled = true;
-            document.getElementById("SavePosition").disabled = false;
-            document.getElementById("RunJavaScript").disabled = false;
-            document.getElementById("Play").disabled = false;
-
-            // send to server
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', 'stop_getting_position');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-            };
-            xhr.send(null);
-
-        }
-
-
-        /**
-         * The begining of every python code we want to run with the arm, including:
-         * imports, loading swift API, 
-         */
-        function getInitCode() {
-            let code = '\n';
-            code += 'import sys\n';
-            code += "sys.path.append('pyuf/')\n";
-            code += 'from uf.wrapper.swift_api import SwiftAPI\n';
-            code += 'from uf.utils.log import *\n';
-            code += 'from time import sleep\n';
-            code += 'logger_init(logging.DEBUG)\n';
-            code += 'global swift\n';
-            code += "swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}\n";
-            code += "sleep(2)\n";
-            code += 'print("Allowing extrusion")\n';
-            // Set the minimum extrusion "temperature" to 0 (so we can use 3d printing features for liquid extrusion)
-            code += 'swift.send_cmd_sync("M302 S0")\n';
-            return code;
-        }
-
-
-        /**
-         * The ending of every python code we want to run with the arm, including:
-         * return to starting position and close connection
-         */
-        function getFinalCode() {
-            let code = '';
-            code += 'swift.set_position(e=0, speed=1500, timeout=30, wait=True)\n';
-            code += 'swift.set_position(120, 0, 50, speed=1500, timeout=30, wait=True)\n';
-            code += 'sleep(1)\n';
-            code += 'swift.close_conn()\n';
-            return code;
-        }
-
-
-        /**       
-         * create python code from workspace, add init and final code and send to the server.
-         */
-        function runWorkspaceCode() {
-            let code = Blockly.Python.workspaceToCode(demoWorkspace);
-            code = getInitCode() + code + getFinalCode();
-            sendCode(code);
-        }
-
-
-        /**       
-         * first checks if the uarm is connected properly to some port. 
-         * then, send the code to the server.
-         * @param   {string}    code     python code (operating the arm) to send to the server
-         */
-        async function sendCode(code) {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', '/is_arm_connected');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-                else {
-                    let response = JSON.parse(xhr.response);
-                    if (response.connected == "0")  // uarm is not connected
-                    {
-                        alert("UArm is not connected properly");
-                        return;
-                    }
-
-                    xhr.open('POST', 'run_code');
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                    xhr.onload = function () {
-                        if (xhr.status !== 200) {
-                            alert('Request failed.  Returned status of ' + xhr.status);
-                        }
-                    };
-                    xhr.send(JSON.stringify({ code: code }));
-                }
-            };
-            xhr.send();
-        }
-
-
-        /**
-         * Create a string representing the xml of the current workspace.
-         * Than send the string to the server in order to save as xml file
-         */
-        function saveWorkspace() {
-            let xml = Blockly.Xml.workspaceToDom(demoWorkspace);
-            let xmlText = Blockly.Xml.domToText(xml);
-            let programName = document.getElementById("programName").value;
-            alert(xmlText);
-            let xhr = new XMLHttpRequest();
-
-            xhr.open('POST', 'save_xml');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status !== 200) {
-                    alert('Request failed.  Returned status of ' + xhr.status);
-                }
-                else {
-                    document.getElementById("programName").value = "";
-                    addProgramToList(programName);
-                }
-            };
-            //      xhr.send(encodeURI('name=' + newName));#}
-            xhr.send(JSON.stringify({ xml: xmlText, name: programName }));
-
-        }
-
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
 
     </script>
 

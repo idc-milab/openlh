@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-bridget/jquery.bridget.js"></script>
+    <script src="bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <script src="bower_components/jquery.threedubmedia/event.drag/jquery.event.drag.js"></script>
+    <script src="bower_components/screenfull/dist/screenfull.js"></script>
+    <script src="bower_components/google-analytics-js/gajs.js"></script>
+    <script src="bower_components/hammerjs/hammer.js"></script>
+    <script src="bower_components/prevent-ghost-click/PreventGhostClick.js"></script>
+    <script src="bower_components/magnificent/src/js/mag-analytics.js"></script>
+    <script src="bower_components/magnificent/src/js/mag.js"></script>
+    <script src="bower_components/magnificent/src/js/mag-jquery.js"></script>
+    <script src="bower_components/magnificent/src/js/mag-control.js"></script>
+    <link rel="stylesheet" href="bower_components/magnificent/src/css/mag.css" />
+    <link rel="stylesheet" href="bower_components/magnificent/src/theme/default.css" />
+</head>
+
+<body>
+
+
+    <img id="picture" src="C:\Users\user\PycharmProjects\OpenLH\labloco\static\jpg\about.jpg"></img>
+
+    <script>
+        $(document).ready(function () {
+            $('#picture').zoom({ url: 'https://cdn.shopify.com/s/files/1/2261/4707/products/campstool-1_1024x1024@2x.jpg' });
+        });
+
+        // Using Colorbox with Zoom
+        $(document).ready(function () {
+            $('#picture').zoom({
+                url: 'https://cdn.shopify.com/s/files/1/2261/4707/products/campstool-1_1024x1024@2x.jpg',
+                callback: function () {
+                    $(this).colorbox({ href: this.src });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
