@@ -1,4 +1,5 @@
 .idea/
-env/
+venv/
 __pycache__/
 __pycache__
+live_position.json
