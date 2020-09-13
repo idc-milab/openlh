@@ -452,6 +452,7 @@ function stopSavePosition() {
 function getInitCode() {
     let code = '\n';
     code += 'import sys\n';
+    code += 'from grid_generator import grid_generator\n';
     code += "sys.path.append('pyuf/')\n";
     code += 'from uf.wrapper.swift_api import SwiftAPI\n';
     code += 'from uf.utils.log import *\n';

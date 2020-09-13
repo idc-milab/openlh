@@ -1,5 +1,5 @@
 """
-Main app module. Dealing with all the different app routes (receiving XML HttpRequests from index.html)
+Main app module. Dealing with all the different app routes (receiving HttpRequests from index.html)
 """
 
 import os
@@ -15,8 +15,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.path.basename('uploads')
 app.config['PROGRAMS_FOLDER'] = os.path.basename('programs')
 app.config.update(TEMPLATES_AUTO_RELOAD=True)
-app.debug = True
-
+app.debug = False
 
 @app.route("/")
 def hello():
@@ -200,7 +199,6 @@ def is_arm_connected():
     ans = 0
     ports = list(serial.tools.list_ports.comports())
     for p in ports:
-        print(str(p))
         if "Arduino Mega 2560" in str(p) or "USB Serial Port‏" in str(p):
             ans = 1
     result = json.dumps({'connected': ans})

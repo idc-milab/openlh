@@ -32,7 +32,8 @@
 <body>
 
     <!-- NavBar -->
-    <nav class="navbar navbar-dark bg-dark " style="box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.4); background-color: #4B515D;">
+    <nav class="navbar navbar-dark bg-dark "
+        style="box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.4); background-color: #4B515D;">
         <a class="navbar-brand pacifico-font" href="#">OpenLH</a>
         <div>
             <img class="milab-logo" src="http://milab.idc.ac.il/wp-content/uploads/2017/04/milab-logo.png"
@@ -183,7 +184,7 @@
                             <div class="input-group mb-3">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="fileInputOnUploadModal"
-                                        accept="image/png" name="image">
+                                        accept="image/png" name="image"> </input>
                                     <label class="custom-file-label" for="fileInputOnUploadModal">Choose file</label>
                                 </div>
                                 <div class="input-group-append">
@@ -344,9 +345,9 @@
                             you can save your program for later use using the <b>Save Program</b> feature.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-danger" onclick="cleanWorkspace()"
-                            data-dismiss="modal">Discard changes</button>
+                            data-dismiss="modal">Clear</button>
                     </div>
                 </div>
             </div>
@@ -441,8 +442,12 @@
                 </value>
             </block>
             <block type="robot_position_current"></block>
+            <block type="robot_position_from_grid"></block>
         </category>
-        <category name="BioPrint" colour="#993DFF">
+        <category name="Microplate" colour="#993DFF">
+            <block type="robot_grid"></block>
+        </category>
+        <category name="BioPrint" colour="#c165ff">
             <block type="print_pattern_mini"></block>
             <block type="print_pattern"></block>
         </category>

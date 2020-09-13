@@ -1,7 +1,9 @@
 """
-A listener registered to receive messages which was sent from the app through SimpleUDPClient.
-The message will include strings with python code including instructions for the arm - using SwiftAPI and generated
-on the Blockly environment. messages will always end with "xxx" string, indicating that the whole message successfully
+A listener registered to receive messages being sent from the app through SimpleUDPClient.
+The message will include one of the following:
+1. python code with instructions for the arm - using the SwiftAPI and generated on the Blockly environment.
+2. an abort command to stop the running thread.
+messages will always end with "xxx" string, indicating that the whole message was received successfully
 transferred.
 """
 
@@ -21,7 +23,7 @@ thread = None
 swift = None
 
 
-class threadWithTrace(threading.Thread):
+class ArmStoppableThread(threading.Thread):
     """
     A stoppable thread, stop using the 'kill' method.
     """
@@ -51,10 +53,14 @@ class threadWithTrace(threading.Thread):
             if event == 'line':
                 # after aborting the running program, return to init state
                 time.sleep(1)
-                swift.set_position(e=0, speed=1500, timeout=30, wait=True)  # eject remaining liquid (if exists)
-                swift.set_position(120, 0, 50, speed=1500, timeout=30, wait=True)  # move to starting position
+                # move to starting position
+                swift.set_position(120, 0, 50, speed=1500,
+                                   timeout=30, wait=True)
+                # eject remaining liquid (if exists)
+                swift.set_position(e=0, speed=1500, timeout=30, wait=True)
+                # close port
                 time.sleep(1)
-                swift.close_conn()  # close port
+                swift.close_conn()
                 raise SystemExit()
         return self.localtrace
 
@@ -70,24 +76,27 @@ def execute_code(code):
     exec(code)
 
 
-def print_function(address="default", data="default"):
+def callback(address="default", data="default"):
     try:
         print("__ Message Received ___")
         global message, thread
         message += data
 
-        if message[-10:] == "___code___":  # the message is a code to run with arm
+        # the message is python code to run with arm
+        if message[-10:] == "___code___":
             print("\t+ execute code")
             print(message)
 
             # Execute code.
-            thread = threadWithTrace(target=execute_code, args=(message[:-10],))
+            thread = ArmStoppableThread(
+                target=execute_code, args=(message[:-10],))
             thread.start()
 
             # Clean message buffer
             message = ""
 
-        elif message[-10:] == "___kill___":  # the message is abort command (stop the running program)
+        # the message is an abort command (stop the running program)
+        elif message[-10:] == "___kill___":
             print("\t+ abort code running")
             if thread is not None:
                 thread.kill()
@@ -112,7 +121,7 @@ parser.add_argument("--port",
 args = parser.parse_args()
 
 dispatch = dispatcher.Dispatcher()
-dispatch.map(address, print_function)
+dispatch.map(address, callback)
 
 server = osc_server.ThreadingOSCUDPServer(
     (args.ip, args.port), dispatch)

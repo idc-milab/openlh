@@ -1,3 +1,5 @@
+import sys
+
 from uf.wrapper.swift_api import SwiftAPI
 from uf.utils.log import *
 from time import sleep
@@ -8,6 +10,7 @@ try:
     swift = SwiftAPI()  # default by filters: {'hwid': 'USB VID:PID=2341:0042'}
 except:  # problem connecting to the arm
     print("123")
+    print("Unexpected error:", sys.exc_info())
     exit()
 sleep(2)
 print("Allowing extrusion")

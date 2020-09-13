@@ -210,6 +210,75 @@ Blockly.defineBlocksWithJsonArray(
             "tooltip": "",
         },
         {
+            "type": "robot_position_from_grid",
+            "message0": "grid %1 row %2 column %3",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "grid",
+                    "check": "robot_grid"
+                },
+                {
+                    "type": "field_input",
+                    "name": "row",
+                    "text": "A",
+                    "check": "String"
+                },
+                {
+                    "type": "field_input",
+                    "name": "column",
+                    "text": "1",
+                    "check": "String"
+                }
+            ],
+            "inputsInline": true,
+            "output": "robot_position",
+            "colour": 260,
+            "tooltip": "",
+        },
+        {
+            "type": "robot_grid",
+            "message0": "🔢 Microplate Grid %1↖ top left%2 ↗ top right%3 ↙ bottom left%4 ↘ bottom right%5 grid size%6",
+            "args0": [
+                {
+                    "type": "input_dummy"
+                },
+                {
+                    "type": "input_value",
+                    "name": "top_left",
+                    "check": "robot_position"
+                },
+                {
+                    "type": "input_value",
+                    "name": "top_right",
+                    "check": "robot_position"
+                },
+                {
+                    "type": "input_value",
+                    "name": "bottom_left",
+                    "check": "robot_position"
+                },
+                {
+                    "type": "input_value",
+                    "name": "bottom_right",
+                    "check": "robot_position"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "grid_size",
+                    "options": [
+                        ["48", "48"],
+                        ["96", "96"],
+                        ["384", "384"]
+                    ]
+                },
+            ],
+            "inputsInline": false,
+            "output": "robot_grid",
+            "colour": '#993DFF',
+            "tooltip": "",
+        },
+        {
             "type": "robot_move",
             "message0": "move to %1",
             "args0": [
@@ -414,7 +483,7 @@ Blockly.defineBlocksWithJsonArray(
             "inputsInline": false,
             "previousStatement": null,
             "nextStatement": null,
-            "colour": "#993DFF",
+            "colour": "#c165ff",
             "tooltip": "",
             "helpUrl": ""
         },
@@ -444,7 +513,7 @@ Blockly.defineBlocksWithJsonArray(
             "inputsInline": false,
             "previousStatement": null,
             "nextStatement": null,
-            "colour": "#993DFF",
+            "colour": "#c165ff",
             "tooltip": "",
             "helpUrl": ""
         },
@@ -813,6 +882,45 @@ Blockly.Python['robot_position_arithmetic_puzzle'] = function (block) {
     return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['robot_position_from_grid'] = function (block) {
+    var grid = String(Blockly.Python.valueToCode(block, 'grid', Blockly.Python.ORDER_ATOMIC));
+    var row = block.getFieldValue('row');
+    var column = block.getFieldValue('column');
+
+    // input validation
+    if (!row.match(/^[a-z]$/i)) {
+        alert("Grid row index must be a letter")
+        return null;
+    }
+
+    // generate python code
+    var code = `${grid}['${row.toUpperCase()}${column}']`;
+    return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['robot_grid'] = function (block) {
+    var top_left = String(Blockly.Python.valueToCode(block, 'top_left', Blockly.Python.ORDER_ATOMIC));
+    var top_right = String(Blockly.Python.valueToCode(block, 'top_right', Blockly.Python.ORDER_ATOMIC));
+    var bottom_left = String(Blockly.Python.valueToCode(block, 'bottom_left', Blockly.Python.ORDER_ATOMIC));
+    var bottom_right = String(Blockly.Python.valueToCode(block, 'bottom_right', Blockly.Python.ORDER_ATOMIC));
+    var grid_size = block.getFieldValue('grid_size');
+    var positions_array = [top_left, top_right, bottom_left, bottom_right];
+
+    // delete unnecessary brackets characters
+    for (i = 0; i < positions_array.length; i++)
+        if (positions_array[i].startsWith("(") && positions_array[i].endsWith(")"))
+            positions_array[i] = positions_array[i].substring(1, positions_array[i].length - 1);
+
+    // input validation
+    if (top_left.length == 0 || top_right.length == 0 || bottom_left.length == 0 || bottom_right.length == 0) {
+        alert("one of the grid's coordinates is missing");
+        return null;
+    }
+
+    var code = `grid_generator(${positions_array[0]},${positions_array[1]},${positions_array[2]},${positions_array[3]},${grid_size})`;
+    return [code, Blockly.Python.ORDER_NONE]
+}
+
 Blockly.Python['robot_move'] = function (block) {
     var value_position = String(Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC));
 
@@ -873,7 +981,7 @@ Blockly.Python['pick_or_drop_pipette'] = function (block) {
 
         // Hovering above pipette
         code += "dict_args[\'wait\'] = True \n";
-        code += "dict_args[\'change_z_by\'] = 50 \n";
+        code += "dict_args[\'change_z_by\'] = 80 \n";
         code += "swift.set_position(**dict_args)\n";
         code += "dict_args[\'change_z_by\'] = 0 \n"; // back to normal location (relevant in case of using variables)
 
@@ -940,8 +1048,15 @@ Blockly.Python['load_Material'] = function (block) {
     else if (action == "EJECT") {
         // Eject option
 
-        // moving to ejecting location
+        // Hovering above
         var code = "dict_args = " + value_position + " \n";
+        code += "dict_args[\'change_z_by\'] = 70 \n";
+        code += "dict_args[\'wait\'] = True \n";
+        code += "swift.set_position(**dict_args)\n";
+
+        // moving to ejecting location
+        code += "dict_args = " + value_position + " \n";
+        code += "dict_args[\'change_z_by\'] = 0 \n";
         code += "dict_args[\'wait\'] = True \n";
         code += "swift.set_position(**dict_args)\n";
 
@@ -951,9 +1066,13 @@ Blockly.Python['load_Material'] = function (block) {
         code += "dict_args[\'relative\'] = True \n";
         code += "swift.set_position(**dict_args)\n";
         code += "dict_args[\'relative\'] = False \n";  // default is not relative
-    }
-    else {
-        // Print option
+
+        // Hovering above
+        code += "dict_args = " + value_position + " \n";
+        code += "dict_args[\'change_z_by\'] = 30 \n";
+        code += "dict_args[\'wait\'] = True \n";
+        code += "swift.set_position(**dict_args)\n";
+        code += "dict_args[\'change_z_by\'] = 0 \n";  // back to normal location (relevant in case of using variables)
     }
 
     code += '\n';
@@ -999,7 +1118,9 @@ Blockly.Python['print_pattern'] = function (block) {
 
     var pattern_edit = pattern.replace(/'/g, '');
     var pattern_format = pattern_edit + type + '.coords';
+    console.log(pattern_format);
     // var code = 'image_format = \'' + pattern_format + '\'\n';
+    var code = '';
 
     // Reading the coords file into a list
     code += 'print(\'retrieveing coords from ' + pattern_format + '\')\n';
@@ -1103,6 +1224,7 @@ Blockly.Python['print_pattern_mini'] = function (block) {
     var pattern_edit = pattern.replace(/'/g, '');
     var pattern_format = pattern_edit + type + '.coords';
     // var code = 'image_format = \'' + pattern_format + '\'\n';
+    var code = '';
 
     // Reading the coords file into a list
     code += 'print(\'retrieveing coords from ' + pattern_format + '\')\n';
@@ -1126,7 +1248,8 @@ Blockly.Python['print_pattern_mini'] = function (block) {
 
     // Moves to printing starting point
     code += 'swift.set_position(x = (step_proportional * coords[0][0] ) + starting_x,' +
-        'y = (step_proportional * coords[0][1] ) + starting_y, z = 60 ,speed=30000, timeout=30, wait=True)\n';
+        'y = (step_proportional * coords[0][1] ) + starting_y, z = 60 ,speed=1500, timeout=30, wait=True)\n';
+    // code += 'swift.set_position(x = starting_x, y = starting_y, z = printing_z + 30 ,speed=1500, timeout=30, wait=True)\n';
 
     // Printing image's coords
     code += 'picture = coords\n';

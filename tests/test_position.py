@@ -7,6 +7,7 @@ logger_init(logging.DEBUG)
 def report_position(position):
     print("x:{x} y:{y} z:{z} ".format(x=position[0], y=position[1], z=position[2]))
 
+
 swift = SwiftAPI() # default by filters: {'hwid': 'USB VID:PID=2341:0042'}
 sleep(2)
 swift.send_cmd_sync("M2019")
