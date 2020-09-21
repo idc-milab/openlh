@@ -2,8 +2,4 @@
 venv/
 __pycache__/
 __pycache__
-/ligase_experiment_triple_testing/
-/colors_experiment/
-/green_delusion_experiment/
-/ligase_experiment/
 live_position.json
