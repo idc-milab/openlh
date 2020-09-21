@@ -4,4 +4,5 @@ bokeh
 psycopg2
 pyserial
 python-osc
-./pyuf
+numpy
+matplotlib

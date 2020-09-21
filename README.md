@@ -37,6 +37,7 @@ This project uses several libraries within it:
 * **psycopg2:** PostgreSQL database adapter for the Python programming language
 * **pyserial:** Python serial port access library
 * **python-osc:** Open Sound Control server and client in pure python 
+* **numpy & matplotlib:** calculating and visualizing auto-generated grids 
 
 
 After setting up the virtual environment, use pip to install the required packages through the ``Terminal`` in the bottom left:  

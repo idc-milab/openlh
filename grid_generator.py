@@ -67,7 +67,7 @@ def grid_generator(top_left, top_right, bottom_left, bottom_right, size):
     # plotting
     ax.scatter(average_x, average_y, average_z)
     plt.grid()
-    plt.show()
+    # plt.show()
 
     return coordinates_dict
 
