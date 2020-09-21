@@ -2,7 +2,7 @@
 The OpenLH is a Liquid handling system based on an available robotic arm platform (uARM swift Pro) which allows for creative exploration by biologists and bio-enthusiasts.
  
 You can find full and detailed step-by-step guide for building one on our [Instructables page](https://www.instructables.com/id/OpenLH/), including BOM, STL models and precise instructions.
-Find more about including publicationds on the project's [website](http://milab.idc.ac.il/teaching/projects/openlh/). 
+Find more info on the project's [website](http://milab.idc.ac.il/teaching/projects/openlh/). 
 Share with us if you're building one!
 
 ![OpenLH](http://milab.idc.ac.il/wp-content/uploads/2018/03/DSC_0830.jpg)
