@@ -34,7 +34,6 @@ This project uses several libraries within it:
 
 * **flask:** Flask is a web framework for Python based on the Werkzeug toolkit.
 * **bokeh:** Interactive Data Visualization in the browser, from Python.
-* **psycopg2:** PostgreSQL database adapter for the Python programming language
 * **pyserial:** Python serial port access library
 * **python-osc:** Open Sound Control server and client in pure python 
 * **numpy & matplotlib:** calculating and visualizing auto-generated grids 
